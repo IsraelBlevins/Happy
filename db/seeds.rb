@@ -5,3 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+DisplayedQuestion.delete_all
+
+q1 = DisplayedQuestion.create! ([
+    question: 'This is a sample question?', 
+    question_type: 'basic'
+])
+
+q2 = DisplayedQuestion.create! ([
+    question: 'This is another sample question?', 
+    question_type: 'basic'
+])

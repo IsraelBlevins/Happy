@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string "full_name" 
       t.string "display_name" 
       t.integer "group_id"
+      t.string  "email"
       t.string  "username"
       t.string  "password"
       t.boolean "superUser", :default => 0
