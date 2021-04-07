@@ -53,11 +53,13 @@ ActiveRecord::Schema.define(version: 2021_03_31_024331) do
     t.string "full_name"
     t.string "display_name"
     t.integer "group_id"
+    t.string "email"
     t.string "username"
     t.string "password"
     t.boolean "superUser", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "password_digest"
   end
 
   create_table "videos", force: :cascade do |t|

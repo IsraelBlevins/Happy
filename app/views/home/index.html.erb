@@ -8,6 +8,8 @@
     <title>Find Your Happy</title>
 </head>
 <body>
+    <p id="notice"><%= notice %></p>
+
     <div class="row">
         <div class="col-md-12">
             <h1>Welcome to your Dashboard!</h1>
@@ -120,6 +122,9 @@
             </figure>
         </div>
     </div>
- 
-
+        
+    <footer>
+        <%= link_to 'Edit', edit_user_path(current_user) %> | <%= link_to 'Show All Users (For Testing)', users_path %>
+    </footer>
 </body>
+</html>
