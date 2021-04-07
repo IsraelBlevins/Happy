@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <meta charset="utf-8" />
+    <title>Find Your Happy</title>
+</head>
+<body>
+
+<%# Group member card %>
+<% @group_members.each do |group_member| %>
+    <div class="row">
+        <%# Group members name and picture %>
+        <div class="col-lg-8">
+            <%# * group member profile pic goes here * %>
+            <%= group_member.display_name %>
+        </div>
+        
+        <%# Leave a comment for this group member %>
+        <div class="col-lg-4">
+
+        </div>
+
+    </div>
+
+<% end %>
+
+</body>
