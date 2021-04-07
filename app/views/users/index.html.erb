@@ -7,6 +7,7 @@
     <tr>
       <th>Username</th>
       <th>Email</th>
+      <th>Group</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -16,6 +17,7 @@
       <tr>
         <td><%= link_to user.username, home_index_path(user) %></td>
         <td><%= user.email %></td>
+        <td><%= user.group_id %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
