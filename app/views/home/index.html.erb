@@ -85,21 +85,26 @@
     <div class="container">
         <div class="row">
     <% @displayed_questions.each do |displayed_question| %>
-        <div class="col">
-            <label for="exampleFormControlInput1" class="form-label"><%= displayed_question.question %></label>
-            <div class="mb-3">
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <%= form_with model: @user_response do |form| %>
+            <div class="col">
+                <label for="exampleFormControlInput1" class="form-label"><%= displayed_question.question %></label>
+                <div class="mb-3">
+                    <%= form.text_area :response, size: "150x10" %>
+                </div>
+                <div>
+                    <%= form.submit %>
+                </div>
+                <div style="margin-top:10px;">
+                </div>
             </div>
-            <div>
-                <button type="button" class="btn btn-outline-warning">Submit</button>
-        </div>
+        <% end %>
     <% end %>
     <div class="row">
         <div class="col-md-6">
-            <h4>Comments</h4>
-            <p>Group Member: Commenting </p>
-            <p>Group Member: Commenting </p>
-            <p>Group Member: Commenting </p>
+            <h3>Group Comments</h3>
+            <% @comments.each do |comment| %>
+                <p><%= comment.comment %></p>
+            <% end %>
         </div>
     </div>
     <div class="row">
