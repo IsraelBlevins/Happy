@@ -14,3 +14,34 @@
  *= require_self
  */
  @import "bootstrap";
+ @import "rails_bootstrap_forms";
+
+ body {
+     background-color: #ffffff;
+ }
+
+ .button {
+     background-color: #006aff;
+ }
+
+ .submit {
+    background-color: #006aff;
+ }
+
+ .form {
+    background-color: #006aff;
+ }
+ .submit {
+     background-color: #006aff;
+ }
+ form.submit {
+     background-color: #006aff;
+ }
+ link {
+     background-color: #ffffff;
+ }
+
+ .slidecontainer {
+     width: 100%;
+ }
+

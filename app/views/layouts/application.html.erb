@@ -12,20 +12,24 @@
     <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
 
     <!-- Milligram CSS minified -->
-    <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    <% #<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css"> %>  
 
+    <style>
+      :root {
+        --background-color: #f0f0f0      
+      }
+      input[type="submit"] {
+     background-color: #006aff;
+ }
+    </style>
   </head>
 
   <body>
     <header>
       <% if current_user %>
-        Hi <%= current_user.username %>
-        |
-        <%= link_to 'Log out', logout_path, method: :delete %>
+        Hi <%= current_user.display_name %> <%= button_to 'Log out', logout_path, method: :delete %>
       <% else %>
-        <%= link_to 'Log in', login_path %>
-        |
-        <%= link_to 'Sign up', new_user_path %>
+        <%#<%= link_to 'Sign up', new_user_path %>
       <% end %>
     </header>
 

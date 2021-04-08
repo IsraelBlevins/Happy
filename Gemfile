@@ -52,3 +52,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 #Add boostrap
 gem 'bootstrap', '~> 5.0.0.beta2'
 
+gem "bootstrap_form", "~> 4.0"
+

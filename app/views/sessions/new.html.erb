@@ -1,9 +1,35 @@
+<%= stylesheet_link_tag 'application.css' %>
+
+<style>
+h1 {
+  text-align: center;
+}
+
+input[type=submit] {
+  background:#006aff
+}
+
+
+</style>
+
+<div style="margin-top:50px;">
+
+<%= image_tag("happy.png", :alt => "rss feed", class: "mx-auto d-block", size: "100x100") %>
+<h1>Find Your Happy</h1>
 <%= form_with(url: login_path, scope: :session, local: true) do |form| %>
-    <div class="danger">
+    <div style= "text-align:center;", class="danger">
       <%= flash[:danger] %>
     </div>
 
-    <div class="actions">
+
+    <div style="margin-top: 100px;"></div>
+
+    <div style="text-align:center;">
+      <p>Don't have an account? <%= link_to 'Sign up', new_user_path %></p>
+    </div>
+
+
+    <div style= "text-align:center;", class="actions">
       <%= form.label :email %> 
       <%= form.email_field :email %> 
   
