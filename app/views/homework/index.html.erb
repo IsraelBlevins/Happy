@@ -4,6 +4,36 @@
     <meta charset="utf-8" />
     <title>Find Your Happy</title>
 </head>
+
+<%# Navbar %>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <%= link_to "Check-Ins", home_index_path, :class => "nav-link"%>
+        </li>
+        <li class="nav-item">
+          <%= link_to "My Group", group_index_path, :class => "nav-link"%>
+        </li>
+        <li class="nav-item">
+            <%= link_to "My Data", data_index_path, :class => "nav-link"%>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Homework", homework_index_path, :class => "nav-link active"%>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
+        <%= button_to "Log out", logout_path, method: :delete, :class => "btn btn-outline-danger" %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <body>
     <div class="container">
         <div class="row">

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>HappyApp</title>
+    <title>Find Your Happy</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -9,30 +9,14 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
     <!-- CSS Reset -->
-    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <%# <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css"> %>
 
     <!-- Milligram CSS minified -->
-    <% #<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css"> %>  
+    <%# <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css"> %>
 
-    <style>
-      :root {
-        --background-color: #f0f0f0      
-      }
-      input[type="submit"] {
-     background-color: #006aff;
- }
-    </style>
   </head>
 
   <body>
-    <header>
-      <% if current_user %>
-        Hi <%= current_user.display_name %> <%= button_to 'Log out', logout_path, method: :delete %>
-      <% else %>
-        <%#<%= link_to 'Sign up', new_user_path %>
-      <% end %>
-    </header>
-
     <%= yield %>
   </body>
 </html>

@@ -1,5 +1,37 @@
-<h1>New User</h1>
+<%# Navbar %>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand mb-0 h1" href="#"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
+        <%= link_to "Login", login_path, :class => "btn btn-outline-primary" %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div style="margin-top:50px;">
+
+<%= image_tag("happy.png", :alt => "rss feed", class: "mx-auto d-block", size: "100x100") %>
+
+<br>
+
+<h2 class="text-center">Find Your Happy</h2>
+<h3 class="text-center">Sign Up</h3>
+
+<br>
 
 <%= render 'form', user: @user %>
+
+<br>
+
+<div class="text-center">
+      <p> <%= link_to 'Already have an account? Login.', login_path %></p>
+</div>
 
 <!-- <%= link_to 'Show All Users (For Testing)', users_path %> -->

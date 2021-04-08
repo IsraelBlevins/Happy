@@ -1,41 +1,55 @@
 <%= stylesheet_link_tag 'application.css' %>
 
-<style>
-h1 {
-  text-align: center;
-}
-
-input[type=submit] {
-  background:#006aff
-}
-
-
-</style>
+<%# Navbar %>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand mb-0 h1" href="#"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
+        <%= link_to "Sign up", new_user_path, :class => "btn btn-outline-primary" %>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <div style="margin-top:50px;">
 
 <%= image_tag("happy.png", :alt => "rss feed", class: "mx-auto d-block", size: "100x100") %>
-<h1>Find Your Happy</h1>
+
+<br>
+
+<h2 class="text-center">Find Your Happy</h2>
+<h3 class="text-center">Login</h3>
+
 <%= form_with(url: login_path, scope: :session, local: true) do |form| %>
-    <div style= "text-align:center;", class="danger">
+    <div class="text-center danger">
       <%= flash[:danger] %>
     </div>
 
+    <br>
+      
+    <div class="text-center actions">
+      <%= form.label :email, "Email:" %> 
+      <%= form.email_field :email, placeholder: 'name@example.com' %> 
 
-    <div style="margin-top: 100px;"></div>
+      <br><br>
+  
+      <%= form.label :password, "Password:" %>
+      <%= form.password_field :password %>
 
-    <div style="text-align:center;">
-      <p>Don't have an account? <%= link_to 'Sign up', new_user_path %></p>
+      <br><br>
+  
+      <%= form.submit "Login", class: "btn btn-primary" %>
     </div>
 
+    <br>
 
-    <div style= "text-align:center;", class="actions">
-      <%= form.label :email %> 
-      <%= form.email_field :email %> 
-  
-      <%= form.label :password %>
-      <%= form.password_field :password %>
-  
-      <%= form.submit "Log in"%>
+    <div class="text-center">
+      <p> <%= link_to 'Don\'t have an account? Sign up.', new_user_path %></p>
     </div>
   <% end %>
