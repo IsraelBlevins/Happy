@@ -1,2 +1,3 @@
 class UserResponse < ApplicationRecord
+    
 end
