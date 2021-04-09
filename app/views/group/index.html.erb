@@ -43,7 +43,7 @@
             <%# Group members name and picture %>
             <div class="col-lg-8">
                 <%# * group member profile pic goes here * %>
-                <%= link_to group_member.username, home_index_path(group_member) %>
+                <%= link_to group_member.display_name, home_index_path(group_member) %>
             </div>
             
             <%# Leave a comment for this group member %>
