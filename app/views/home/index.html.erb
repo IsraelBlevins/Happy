@@ -9,13 +9,13 @@
 
 <%# Navbar %>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-  <div class="container-fluid">    
+  <div class="container-fluid">
     <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <%= link_to "Check-Ins", home_index_path, :class => "nav-link active"%>
         </li>
@@ -29,8 +29,16 @@
           <%= link_to "Homework", homework_index_path, :class => "nav-link"%>
         </li>
       </ul>
-      <ul class="nav navbar-nav ml-auto">
-        <%= button_to "Log out", logout_path, method: :delete, :class => "btn btn-outline-danger" %>
+      <ul class="nav navbar-nav pr-3">
+        <%= link_to "Edit profile", edit_user_path(current_user), :class => "btn btn-warning" %>
+      </ul>
+      <%if current_user.superUser %>
+        <ul class="nav navbar-nav pr-3">
+          <%= link_to "Show all users", users_path, :class => "btn btn-warning" %>
+        </ul>
+      <% end %> 
+      <ul class="nav navbar-nav">
+        <%= link_to "Log out", logout_path, method: :delete, :class => "btn btn-outline-danger" %>
       </ul>
     </div>
   </div>
@@ -113,9 +121,7 @@
                 <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
             </div>
         </div>
-</div>
-    <footer>
-        <%= link_to 'Edit', edit_user_path(current_user) %> | <%= link_to 'Show All Users (For Testing)', users_path %>
-    </footer>
+    </div>
+
 </body>
 </html>

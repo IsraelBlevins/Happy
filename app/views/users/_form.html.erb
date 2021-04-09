@@ -1,4 +1,4 @@
-<%= form_with(model: user, local: true, :html => {:multipart => true}) do |form| %>
+<!--<%= form_with(model: user, local: true, :html => {:multipart => true}) do |form| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -37,6 +37,11 @@
 
     <br><br>
 
+    <%if current_user.superUser %>
+      <%= form.label :group_id, "Group" %>
+      <%= form.number_field :group_id %>
+    <%end%>
+
     <%= form.submit %>
   </div>
-<% end %>
+<% end %>-->

@@ -26,7 +26,6 @@
 
 <br>
 
-<!--<%= render 'form', user: @user %>-->
 
 <%= form_with(model: @user, local: true, :html => {:multipart => true}) do |form| %>
   <% if @user.errors.any? %>
@@ -63,7 +62,7 @@
 
     <br><br>
 
-    <%= form.submit %>
+    <%= form.submit "Create User", class: "btn btn-primary"%>
   </div>
 <% end %>
 

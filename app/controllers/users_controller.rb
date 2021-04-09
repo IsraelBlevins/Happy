@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users = User.order(params[:group_id])
   end
 
   # GET /users/1 or /users/1.json
@@ -65,6 +65,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.fetch(:user, {}).permit(:display_name, :email, :password, :password_confirmation, :image)
+      params.fetch(:user, {}).permit(:display_name, :email, :password, :password_confirmation, :group_id, :image)
     end
 end
