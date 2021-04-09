@@ -1,5 +1,95 @@
-<h1>Editing User</h1>
+<%# Navbar %>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <%= link_to "Check-Ins", home_index_path, :class => "nav-link"%>
+        </li>
+        <li class="nav-item">
+          <%= link_to "My Group", group_index_path, :class => "nav-link"%>
+        </li>
+        <li class="nav-item">
+            <%= link_to "My Data", data_index_path, :class => "nav-link"%>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Homework", homework_index_path, :class => "nav-link"%>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav pr-3">
+        <%= link_to "Edit profile", edit_user_path(current_user), :class => "btn btn-warning active" %>
+      </ul>
+      <%if current_user.superUser %>
+        <ul class="nav navbar-nav pr-3">
+          <%= link_to "Show all users", users_path, :class => "btn btn-warning" %>
+        </ul>
+      <% end %> 
+      <ul class="nav navbar-nav">
+        <%= link_to "Log out", logout_path, method: :delete, :class => "btn btn-outline-danger" %>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-<%= render 'form', user: @user %>
+<br>
+<h2 class="text-center">Edit User</h2>
+<br>
 
-<%= link_to 'User Home', home_index_path(@user) %> | <%= link_to 'Show All Users (For Testing)', users_path %>
+<%= form_with(model: @user, local: true, :html => {:multipart => true}) do |form| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="text-center actions">
+    
+    <%if current_user == @user %> 
+        <p>
+            <%= form.label :image, "Profile Picture" %>
+            <%= form.file_field :image%>
+        </p>
+    
+
+        <%= form.label :username %> 
+        <%= form.text_field :username %> 
+
+        <br><br>
+    
+
+        <%= form.label :email %> 
+        <%= form.email_field :email %>
+
+        <br><br>
+     
+        <%= form.label :password %>
+        <%= form.password_field :password %>
+
+        <br><br>
+
+        <%= form.label :password_confirmation, "Confirm Password" %>
+        <%= form.password_field :password_confirmation %>
+
+        <br><br>
+    <%end%>
+
+    <%if current_user.superUser %>
+      <%= form.label :group_id, "Group" %>
+      <%= form.number_field :group_id %>
+    <%end%>
+
+    <br><br>
+
+    <%= form.submit "Save edit", class: "btn btn-primary" %>
+  </div>
+<% end %>
