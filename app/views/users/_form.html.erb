@@ -30,6 +30,8 @@
     <%= form.label :password_confirmation, "Confirm Password" %>
     <%= form.password_field :password_confirmation %>
 
+    <br><br>
+
     <%if current_user.superUser %>
       <%= form.label :group_id, "Group" %>
       <%= form.number_field :group_id %>
