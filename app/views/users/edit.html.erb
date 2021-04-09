@@ -17,30 +17,35 @@
   <% end %>
 
   <div class="text-center actions">
-    <p>
-    <%= form.label :image, "Profile Picture" %>
-    <%= form.file_field :image %>
-    </p>
+    
+    <%if current_user == @user %> 
+        <p>
+            <%= form.label :image, "Profile Picture" %>
+            <%= form.file_field :image %>
+        </p>
+    
 
-    <%= form.label :username %> 
-    <%= form.text_field :username %> 
+        <%= form.label :username %> 
+        <%= form.text_field :username %> 
 
-    <br><br>
+        <br><br>
+    
 
-    <%= form.label :email %> 
-    <%= form.email_field :email %>
+        <%= form.label :email %> 
+        <%= form.email_field :email %>
 
-    <br><br>
+        <br><br>
+     
+        <%= form.label :password %>
+        <%= form.password_field :password %>
 
-    <%= form.label :password %>
-    <%= form.password_field :password %>
+        <br><br>
 
-    <br><br>
+        <%= form.label :password_confirmation, "Confirm Password" %>
+        <%= form.password_field :password_confirmation %>
 
-    <%= form.label :password_confirmation, "Confirm Password" %>
-    <%= form.password_field :password_confirmation %>
-
-    <br><br>
+        <br><br>
+    <%end%>
 
     <%if current_user.superUser %>
       <%= form.label :group_id, "Group" %>
