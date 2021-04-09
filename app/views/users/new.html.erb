@@ -26,7 +26,46 @@
 
 <br>
 
-<%= render 'form', user: @user %>
+<!--<%= render 'form', user: @user %>-->
+
+<%= form_with(model: @user, local: true, :html => {:multipart => true}) do |form| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="text-center actions">
+
+    <%= form.label :username %> 
+    <%= form.text_field :username %> 
+
+    <br><br>
+
+    <%= form.label :email %> 
+    <%= form.email_field :email %>
+
+    <br><br>
+
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+
+    <br><br>
+
+    <%= form.label :password_confirmation, "Confirm Password" %>
+    <%= form.password_field :password_confirmation %>
+
+    <br><br>
+
+    <%= form.submit %>
+  </div>
+<% end %>
 
 <br>
 

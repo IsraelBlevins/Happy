@@ -55,3 +55,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "bootstrap_form", "~> 4.0"
 
+#Profile Image
+gem 'carrierwave', '0.10.0'
+

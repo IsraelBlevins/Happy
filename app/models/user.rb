@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  #attr_accessible :username, :email, :password, :password_confirmation
+  #attr_accessible :username, :email, :password, :password_confirmation, :image
   has_secure_password
 
   before_save { self.email = email.downcase }
@@ -9,4 +9,5 @@ class User < ApplicationRecord
   validates :email, presence: true, format: { with: EMAIL_FORMAT }, uniqueness: true
   #validates :password, presence: true, length:{ minimum:5 }
   #validates :password_confirmation, presence: true
+  mount_uploader :image, ImageUploader
 end
