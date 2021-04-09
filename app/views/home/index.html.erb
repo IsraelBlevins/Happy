@@ -70,9 +70,15 @@
             </div>
         </div>
     </div>
-        
-    <footer>
-        <%= link_to 'Edit', edit_user_path(current_user) %> | <%= link_to 'Show All Users (For Testing)', users_path %>
-    </footer>
+    <%if current_user.superUser %>   
+        <footer>
+            <%= link_to 'Edit', edit_user_path(current_user) %> | <%= link_to 'Show All Users', users_path %>
+        </footer>
+    <%else%>
+        <footer>
+            <%= link_to 'Edit', edit_user_path(current_user) %> 
+        </footer>
+    <%end%>
+
 </body>
 </html>

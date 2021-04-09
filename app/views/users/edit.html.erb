@@ -1,5 +1,8 @@
 <h1>Editing User</h1>
 
 <%= render 'form', user: @user %>
-
-<%= link_to 'User Home', home_index_path(@user) %> | <%= link_to 'Show All Users (For Testing)', users_path %>
+<%if current_user.superUser %> 
+    <%= link_to 'User Home', home_index_path(@user) %> | <%= link_to 'Show All Users (For Testing)', users_path %>
+<%else%>
+    <%= link_to 'User Home', home_index_path(@user) %> 
+<%end%>

@@ -24,8 +24,10 @@
     <%= form.label :password_confirmation, "Confirmation" %>
     <%= form.password_field :password_confirmation %>
 
-    <%= form.label :group_id, "Group" %>
-    <%= form.number_field :group_id %>
+    <%if current_user.superUser %>
+      <%= form.label :group_id, "Group" %>
+      <%= form.number_field :group_id %>
+    <%end%>
 
     <%= form.submit %>
   </div>
