@@ -24,17 +24,13 @@
 <h2 class="text-center">Find Your Happy</h2>
 <h3 class="text-center">Sign Up</h3>
 
-<br>
-
-
 <%= form_with(model: @user, local: true, :html => {:multipart => true}) do |form| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
         <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+          <p style="color:red; text-align: center"><%= message %></p>
         <% end %>
       </ul>
     </div>
@@ -42,27 +38,30 @@
 
   <div class="text-center actions">
 
-    <%= form.label :display_name %> 
-    <%= form.text_field :display_name %> 
+  <table style="padding-right: 140px;">
+    <tr>
+      <th><%= form.label :display_name, "Display Name:" %> </th>
+      <td><%= form.text_field :display_name %> </td>
+    </tr>
+      <br><br>
+    <tr>
+      <th><%= form.label :email, "Email:" %> </th>
+      <td><%= form.email_field :email %> </td>
+    </tr>
+    <tr>
+      <th><%= form.label :password, "Password:" %> </th>
+      <td><%= form.password_field :password %> </td>
+    </tr>
+    <tr>
+      <th><%= form.label :password_confirmation, "Confirm Password:" %> </th>
+      <td><%= form.password_field :password_confirmation %> </td>
+    </tr>
+  </table>
 
-    <br><br>
+  <br>
 
-    <%= form.label :email %> 
-    <%= form.email_field :email %>
+  <%= form.submit "Create User", class: "btn btn-primary"%>
 
-    <br><br>
-
-    <%= form.label :password %>
-    <%= form.password_field :password %>
-
-    <br><br>
-
-    <%= form.label :password_confirmation, "Confirm Password" %>
-    <%= form.password_field :password_confirmation %>
-
-    <br><br>
-
-    <%= form.submit "Create User", class: "btn btn-primary"%>
   </div>
 <% end %>
 
