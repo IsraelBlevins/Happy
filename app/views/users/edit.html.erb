@@ -56,10 +56,6 @@
      
     <%if current_user == @user %>
       <tr>
-        <th><%= form.label :image, "Profile Picture" %> </th>
-        <td><%= form.file_field :image%> </td>
-      </tr>
-      <tr>
         <th><%= form.label :display_name, "Display Name:" %>  </th>
         <td><%= form.text_field :display_name %></td>
       </tr> 
