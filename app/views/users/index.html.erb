@@ -56,7 +56,7 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to user.username, home_index_path(user) %></td>
+        <td><%= link_to user.display_name, home_index_path(user) %></td>
         <td><%= user.email %></td>
         <td><%= user.group_id %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
