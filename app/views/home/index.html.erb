@@ -56,31 +56,31 @@
         <div class="row">
             <div class="col-md-6">
             <h3>Enter up to 5 goals you want to accomplish this week</h3>
-            <div class="form-check">
+            <div class="pull-left">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             </div>
             <div class="mb-3">
                 <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
             </div>
-            <div class="form-check">
+            <div class="pull-left">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             </div>
             <div class="mb-3">
                 <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
             </div>
-            <div class="form-check">
+            <div class="pull-left">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             </div>
             <div class="mb-3">
                 <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
             </div>
-            <div class="form-check">
+            <div class="pull-left">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             </div>
             <div class="mb-3">
                 <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
             </div>
-            <div class="form-check">
+            <div class="pull-left">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
             </div>
             <div class="mb-3">
@@ -98,11 +98,11 @@
         </div>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
-                <%= bootstrap_form_with model: @user_response do |form| %>
+                <%= bootstrap_form_tag(user_id: current_user.user_id, question_asked: displayed_question.question, response_type: "free form", response_date: Time.now, action: 'create_response', method: 'GET') do |form| %>
                     <div class="col">
                         <label for="exampleFormControlInput1" class="form-label"><%= displayed_question.question %></label>
                         <div class="mb-3">
-                            <%= form.text_area :response, size: "100x10" %>
+                            <%= form.text_area :response, label: "Respond the best you can", size: "100x10" %>
                         </div>
                         <div>
                             <%= form.submit "Save", class: "btn btn-warning" %>
@@ -113,10 +113,10 @@
                 <% end %>
             <% end %>
             <h4>How are you feeling right now?</h4>
-            <div class="slidecontainer">
-                <label for="customRange1" class="form-label"></label>
-                <input type="range" class="form-range" id="customRange1">
+            <div>
+                <input type="range" min="1" max="9" value="4" class="slider" id="customRange1" style="width:100%">
             </div>
+            <div>
                 <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
             </div>
         </div>
