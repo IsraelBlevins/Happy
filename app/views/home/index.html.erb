@@ -98,11 +98,10 @@
         </div>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
-                <%= bootstrap_form_tag(user_id: current_user.user_id, question_asked: displayed_question.question, response_type: "free form", response_date: Time.now, action: 'create_response', method: 'GET') do |form| %>
+                <%= bootstrap_form_tag(:controller => 'home', :action => 'respond', :method => 'get', user_id: current_user.user_id, question_asked: displayed_question.question, response_type: "free form", response_date: Time.now) do |form| %>
                     <div class="col">
-                        <label for="exampleFormControlInput1" class="form-label"><%= displayed_question.question %></label>
                         <div class="mb-3">
-                            <%= form.text_area :response, label: "Respond the best you can", size: "100x10" %>
+                            <%= form.text_area :response, label: displayed_question.question, size: "100x10" %>
                         </div>
                         <div>
                             <%= form.submit "Save", class: "btn btn-warning" %>

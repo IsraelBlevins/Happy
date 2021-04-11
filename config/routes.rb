@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'homework/index'
   get 'sessions/new' => 'sessions#new'
   get 'home/index' => 'home#index'
+  get '/respond' => "home#respond", :as => :respond
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resources :users
 
