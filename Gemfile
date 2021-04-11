@@ -57,4 +57,4 @@ gem "bootstrap_form", "~> 4.0"
 
 #Profile Image
 gem 'carrierwave', '0.10.0'
-
+gem 'rmagick'

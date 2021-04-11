@@ -43,7 +43,7 @@
 </nav>
 
 <body>
-<%= image_tag current_user.image_url.to_s, :class => "img-thumbnail" %>
+
 <%# Group member card %>
 <% if current_user.group_id != nil %>
     <% @group_members.each do |group_member| %> 
