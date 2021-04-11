@@ -27,22 +27,25 @@
 <h3 class="text-center">Login</h3>
 
 <%= form_with(url: login_path, scope: :session, local: true) do |form| %>
-    <div class="text-center danger">
-      <%= flash[:danger] %>
+    <div>
+      <p style="color:red; text-align: center"><%= flash[:danger] %></p>
     </div>
 
     <br>
       
     <div class="text-center actions">
-      <%= form.label :email, "Email:" %> 
-      <%= form.email_field :email, placeholder: 'name@example.com' %> 
-
-      <br><br>
+    <table style="padding-right: 80px;">
+      <tr>
+        <th><%= form.label :email, "Email:" %> </th>
+        <td><%= form.email_field :email, placeholder: 'name@example.com' %> </td>
+      </tr>
+      <tr>
+        <th><%= form.label :password, "Password:" %> </th>
+        <td><%= form.password_field :password %> </td>
+      </tr>
+    </table>
   
-      <%= form.label :password, "Password:" %>
-      <%= form.password_field :password %>
-
-      <br><br>
+    <br>
   
       <%= form.submit "Login", class: "btn btn-primary" %>
     </div>
