@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_223334) do
     t.integer "rating"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "morning"
   end
 
   create_table "user_responses", force: :cascade do |t|
