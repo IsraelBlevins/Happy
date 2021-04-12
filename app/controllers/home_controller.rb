@@ -34,6 +34,9 @@ class HomeController < ApplicationController
   def new
     @user_response = UserResponse.new
   end
+
+  def edit
+  end
   #POST /home or /home.json
   def create
     @user_response = UserResponse.new(user_response_params)
@@ -49,7 +52,23 @@ class HomeController < ApplicationController
     end
   end
 
+  def update
+    respond_to do |format|
+      if @user_response.update(user_response_params)
+        format.html { redirect_to home_index_path(@user), notice: "Response was successfully updated." }
+        format.json { render :show, status: :ok, location: @user_responses }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @user_response.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
+
+  def set_response
+      @user_response = UserResponse.find(params[:response])
+  end
 
   def user_response_params
     params.permit(:user_id, :question_asked, :response_type, :response_date, :response)

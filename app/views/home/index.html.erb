@@ -98,15 +98,35 @@
         </div>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
-            <%if displayed_question.question_type == "Free Form"%>
+            <% @user_responses.each do |user_response| %>
+            <%if displayed_question.question_type == "Free Form" %>
+            <%if displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && displayed_question.created_at.to_date == user_response.response_date.to_date%>
+                <%= bootstrap_form_with url: "/update" do |form| %>
+                    <div class="col">
+                        <div class="mb-3">
+                            <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response %>
+                            <%= form.hidden_field :user_id, value: current_user.id %>
+                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                            <%= form.hidden_field :response_type, value: "Free Form" %>
+                            <%= form.hidden_field :response_date, value: Date.today %>
+                        </div>
+                    </div>
+                    <div>
+                        <%= form.submit "Save", class: "btn btn-warning"%>
+                    </div>
+                    <div style="margin-top:10px;">
+                    </div>
+                <% end %>    
+                
+            <% else %>    
                 <%= bootstrap_form_with url: "/create" do |form| %> 
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :response, label: displayed_question.question, size: "100x10" %>
-                            <%= form.hidden_field :user_id, value: current_user.user_id %>
+                            <%= form.hidden_field :user_id, value: current_user.id %>
                             <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                            <%= form.hidden_field :response_type, value: "free form" %>
-                            <%= form.hidden_field :response_date, value: Time.now %>
+                            <%= form.hidden_field :response_type, value: "Free Form" %>
+                            <%= form.hidden_field :response_date, value: Date.today %>
                         </div>
                         <div>
                             <%= form.submit "Save", class: "btn btn-warning" %>
@@ -115,8 +135,12 @@
                         </div>
                     </div>
                 <% end %>
-            <%end%>
             <% end %>
+            <% end %>    
+            <% end %>
+            <% end %>
+            </div>
+            <div class="col-md-6">
             <h4>How are you feeling right now?</h4>
             <div>
                 <input type="range" min="1" max="9" value="4" class="slider" id="customRange1" style="width:100%">
