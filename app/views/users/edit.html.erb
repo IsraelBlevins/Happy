@@ -42,53 +42,46 @@
 <%= form_with(model: @user, local: true, :html => {:multipart => true}) do |form| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
         <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+          <p style="color:red; text-align: center"><%= message %></p>
         <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="text-center actions">
-    
-    <%if current_user == @user %> 
-        <p>
-            <%= form.label :image, "Profile Picture" %>
-            <%= form.file_field :image%>
-        </p>
-    
-
-        <%= form.label :username %> 
-        <%= form.text_field :username %> 
-
-        <br><br>
-    
-
-        <%= form.label :email %> 
-        <%= form.email_field :email %>
-
-        <br><br>
+  <table style="padding-right: 20px;">
      
-        <%= form.label :password %>
-        <%= form.password_field :password %>
-
-        <br><br>
-
-        <%= form.label :password_confirmation, "Confirm Password" %>
-        <%= form.password_field :password_confirmation %>
-
-        <br><br>
+    <%if current_user == @user %>
+      <tr>
+        <th><%= form.label :display_name, "Display Name:" %>  </th>
+        <td><%= form.text_field :display_name %></td>
+      </tr> 
+      <tr>
+        <th><%= form.label :email, "Email:" %> </th>
+        <td><%= form.email_field :email %> </td>
+      </tr> 
+      <tr>
+        <th><%= form.label :password, "Password:" %> </th>
+        <td><%= form.password_field :password %> </td>
+      </tr> 
+      <tr>
+        <th><%= form.label :password_confirmation, "Confirm Password:" %> </th>
+        <td><%= form.password_field :password_confirmation %> </td>
+      </tr> 
     <%end%>
 
     <%if current_user.superUser %>
-      <%= form.label :group_id, "Group" %>
-      <%= form.number_field :group_id %>
+      <tr>
+        <th><%= form.label :group_id, "Group:" %> </th>
+        <td><%= form.number_field :group_id %></td>
+      </tr> 
     <%end%>
+  </table>
 
-    <br><br>
+  <br>
 
     <%if current_user.superUser %>
       <%= form.label :superUser, "Super User" %>
