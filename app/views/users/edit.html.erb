@@ -78,16 +78,14 @@
         <th><%= form.label :group_id, "Group:" %> </th>
         <td><%= form.number_field :group_id %></td>
       </tr> 
+      <tr>
+        <th><%= form.label :superUser, "Admin Role?" %></th>
+        <th><%= form.select :superUser, options_for_select([["", ""], "true", "false"]), {} %></th>
+      </tr>
     <%end%>
   </table>
 
   <br>
-
-    <%if current_user.superUser %>
-      <%= form.label :superUser, "Super User" %>
-      <%= form.select :superUser, options_for_select([["", ""], "true", "false"]), {} %>
-      <br><br>
-    <%end%>
 
     <%= form.submit "Save edit", class: "btn btn-primary" %>
   </div>
