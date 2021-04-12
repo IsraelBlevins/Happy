@@ -80,7 +80,7 @@
       </tr> 
       <tr>
         <th><%= form.label :superUser, "Admin Role?" %></th>
-        <th><%= form.select :superUser, options_for_select([["", ""], "true", "false"]), {} %></th>
+        <th><%= form.select :superUser, options_for_select([[@user.superUser, ""], "true", "false"]), {} %></th>
       </tr>
     <%end%>
   </table>
