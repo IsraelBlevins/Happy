@@ -92,7 +92,7 @@
 
     <%if current_user.superUser %>
       <%= form.label :superUser, "Super User" %>
-      <%= form.select :superUser, options_for_select([["", ""], "true", "false"]), {} %>
+      <%= form.select :superUser, options_for_select([[@user.superUser, ""], "true", "false"]), {} %>
       <br><br>
     <%end%>
 
