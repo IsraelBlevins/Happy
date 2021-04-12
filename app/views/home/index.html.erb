@@ -10,7 +10,6 @@
 <%# Navbar %>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
   <div class="container-fluid">
-    <%= image_tag current_user.image_url(:thumb).to_s%>
     <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -87,10 +86,25 @@
             <div class="mb-3">
                 <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
             </div>
+
             <h3>Group Comments</h3>
-            <% @comments.each do |comment| %>
-                <p><%= comment.comment %></p>
-            <% end %>
+
+            <div style="height:300px;overflow:auto;">
+               <%= render current_user.comment %>
+            </div>
+
+            <div class="card my-1">
+              <div class="card-body">
+                <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
+                  <div class="form-group">
+                    <%= f.label 'New comment' %>
+                    <%= f.text_area :body, class: 'form-control' %>
+                  </div>
+                  <%= f.submit 'Submit', class: 'btn btn-primary' %>
+                <% end %>
+              </div>
+            </div>
+
             <h2>My Tracking</h2>
             <p class="font-weight-bold">This Week</p>
             <figure class="figure">

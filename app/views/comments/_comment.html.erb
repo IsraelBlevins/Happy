@@ -1,0 +1,13 @@
+<% unless !comment.persisted? %>
+    <div class="card">
+        <div class="card-body">
+            <header style="font-size:20px">
+                <%= "From: " + comment.commenter %>
+            </header>
+            <%= comment.body %>
+            <footer style="font-size:12px">
+                <%= "Posted on " + comment.created_at.strftime("%b %d, %Y") + " at " + comment.created_at.strftime("%-I:%M:%S %Z")%>
+            </footer>
+        </div>
+    </div>
+<% end %>

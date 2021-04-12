@@ -16,3 +16,8 @@ table {
 th, td {
     text-align: left;
 }
+
+.wrapper{
+    display: flex;
+    flex-direction: column-reverse;
+}

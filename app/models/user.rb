@@ -10,4 +10,5 @@ class User < ApplicationRecord
   #validates :password, presence: true, length:{ minimum:5 }
   #validates :password_confirmation, presence: true
   mount_uploader :image, ImageUploader
+  has_many :comment
 end
