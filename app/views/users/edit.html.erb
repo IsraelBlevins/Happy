@@ -90,6 +90,12 @@
 
     <br><br>
 
+    <%if current_user.superUser %>
+      <%= form.label :superUser, "Super User" %>
+      <%= form.select :superUser, options_for_select([["", ""], "true", "false"]), {} %>
+      <br><br>
+    <%end%>
+
     <%= form.submit "Save edit", class: "btn btn-primary" %>
   </div>
 <% end %>
