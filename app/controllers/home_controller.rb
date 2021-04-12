@@ -4,7 +4,32 @@ class HomeController < ApplicationController
     @comments = Comment.all()
     @user_responses = UserResponse.all()
     @user_response = UserResponse.new(user_response_params)
+    @displayed_questions = DisplayedQuestion.all()
   end
+
+  def newQuestion
+    @displayed_question = DisplayedQuestion.new
+  end
+
+
+  def createQuestion
+    @displayed_question = DisplayedQuestion.new(displayed_question_params)
+
+    respond_to do |format|
+      if @displayed_question.save
+        format.html { redirect_to home_index_path(@user), notice: 'New Question was successfully saved.' }
+        format.json { render :show, status: :created, location: @displayed_questions }
+      else
+        format.html { render :new }
+        format.json { render json: @displayed_question.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def displayed_question_params
+    params.permit(:question, :question_type)
+  end
+
 
   def new
     @user_response = UserResponse.new
@@ -29,5 +54,6 @@ class HomeController < ApplicationController
   def user_response_params
     params.permit(:user_id, :question_asked, :response_type, :response_date, :response)
   end
+
 
 end
