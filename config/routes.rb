@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   get 'home/index' => 'home#index'
   post '/create' => 'home#create'
   post '/createQuestion' => 'home#createQuestion'
-  post '/update' => 'home#update'
-  post 'createMoodRating' => 'home#createMoodRating'
+  patch '/update' => 'home#update'
+  post '/createMoodRating' => 'home#createMoodRating'
+  patch '/updateMoodRating' => 'home#updateMoodRating'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resources :users
 

@@ -1,10 +1,13 @@
 class HomeController < ApplicationController
+  before_action :set_response, only: %i[update]
+  before_action :set_rating, only: %i[updateMoodRating]
+  
   def index
     @displayed_questions = DisplayedQuestion.all()
     @comments = Comment.all()
     @user_responses = UserResponse.all()
-    @user_response = UserResponse.new(user_response_params)
     @displayed_questions = DisplayedQuestion.all()
+    @mood_ratings = MoodRating.all()
   end
 
   def newQuestion
@@ -43,6 +46,18 @@ class HomeController < ApplicationController
       end
     end
   end
+  
+  def updateMoodRating
+    respond_to do |format|
+      if @mood_rating.update_attributes(mood_rating_params)
+        format.html { redirect_to home_index_path(@user), notice: "Mood was successfully updated." }
+        format.json { render :show, status: :ok, location: @user_response }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @user_response.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   def mood_rating_params
       params.permit(:user_id, :rating, :morning)
@@ -76,7 +91,7 @@ class HomeController < ApplicationController
 
   def update
     respond_to do |format|
-      if @user_response.update(user_response_params)
+      if @user_response.update_attributes(user_response_params)
         format.html { redirect_to home_index_path(@user), notice: "Response was successfully updated." }
         format.json { render :show, status: :ok, location: @user_response }
       else
@@ -89,11 +104,14 @@ class HomeController < ApplicationController
   private
 
   def set_response
-      @user_response = UserResponse.find(params[:user_id])
+      @user_response = UserResponse.find(params[:id])
+  end
+  def set_rating
+      @mood_rating = MoodRating.find(params[:id])
   end
 
   def user_response_params
-    params.permit(:user_id, :question_asked, :response_type, :response_date, :response)
+    params.permit(:id, :user_id, :question_asked, :response_type, :response_date, :response)
   end
 
 

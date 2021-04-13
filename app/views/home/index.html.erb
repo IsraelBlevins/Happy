@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 
+<script>
+    function updateValue(val)
+    {
+        document.getElementById('sliderDisplay').innerHTML = "Current Rating: " + val;
+    }
+</script>
+
+
+
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel= "application.css">
@@ -52,6 +61,7 @@
             <h2>Welcome to your Daily Check-Ins, <%= current_user.display_name %>!</h2>
         </div>
     </div>
+    <%#Checkboxes%>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -96,11 +106,13 @@
                 <img src="sampleGraph.jpg" class="figure-img img-fluid rounded" alt="..." style="width: 375px">
             </figure>
         </div>
+            <%#Free Form Questions%>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
+            <% @notDisplayed = true %>
             <% @user_responses.each do |user_response| %>
-            <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id   %>
-                    <%= bootstrap_form_with url: "/update" do |form| %>
+            <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id %>
+                    <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response %>
@@ -108,16 +120,20 @@
                             <%= form.hidden_field :question_asked, value: displayed_question.question %>
                             <%= form.hidden_field :response_type, value: "Free Form" %>
                             <%= form.hidden_field :response_date, value: Date.today %>
+                            <%= form.hidden_field :id, value: user_response.id%>
+                            <% @notDisplayed = false %>
                         </div>
                     </div>
                     <div>
-                        <%= form.submit "Save", class: "btn btn-warning"%>
+                        <%= form.submit "Update", class: "btn btn-warning"%>
                     </div>
                     <div style="margin-top:10px;">
                     </div>
                     <% end %>
-            <% elsif user_response.nil?  %>
-                <%= bootstrap_form_with url: "/create" do |form| %> 
+            <% end %>
+            <% end %>
+            <%if @notDisplayed %>  
+                    <%= bootstrap_form_with url: "/create" do |form| %> 
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :response, label: displayed_question.question, size: "100x10" %>
@@ -134,39 +150,45 @@
                     </div>
                 <% end %>
             <% end %>
-            <% end %>  
             <% end %>
             </div>
+            <%#Mood Rating Slider%>
             <div class="col-md-6">
             <div>
-                <%if Time.now.hour < 12 %>
-                    <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                        <%= form.range_field :rating, label: "How are you feeling this morning?", in: 1..9 %>
+                <%if Time.now.hour > 9 && Time.now.hour < 11 %>
+                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                        <div>
+                        <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                        </div>
+                        <div style="margin-top:10px;">
+                        </div>
+                        <%= form.range_field :rating,  label: "How are you feeling this morning?", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                        <p id="sliderDisplay"></p>
                         <%= form.hidden_field :user_id, value: current_user.id %>
                         <%= form.hidden_field :morning, value: true %>
                         <%= form.submit "Save", class: "btn btn-warning" %>
-                    <% end %>
                         <div style="margin-top:10px;">
                         </div>
-                <% else %>
-                    <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                        <%= form.range_field :rating, label: "How are you feeling this evening?", :in => 1..9, :step => 1 %>
-                        <%= form.label :rating, "Current Value: "%>
+                        <% end %>
+                <% elsif Time.now.hour > 15 && Time.now.hour < 18 %>
+                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                        <div>
+                        <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                        </div>
                         <div style="margin-top:10px;">
                         </div>
+                        <%= form.range_field :rating,  label: "How are you feeling this evening?", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                        <p id="sliderDisplay"></p>
                         <%= form.hidden_field :user_id, value: current_user.id %>
                         <%= form.hidden_field :morning, value: false %>
                         <%= form.submit "Save", class: "btn btn-warning" %>
-                    <% end %>
                         <div style="margin-top:10px;">
                         </div>
+                        <% end %>
                 <% end %>
             </div>
-            <div>
-                <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
-            </div>
         </div>
-
+        <%# Add A New Question%>
         <%if current_user.superUser %>
         <div class="col-md-6">
                 <h4>New Question Form</h4>
