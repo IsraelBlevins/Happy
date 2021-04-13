@@ -98,9 +98,8 @@
         </div>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
-            <%if displayed_question.question_type == "Free Form" %>
             <% @user_responses.each do |user_response| %>
-            <%if displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && displayed_question.created_at.to_date == user_response.response_date %>
+            <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id   %>
                     <%= bootstrap_form_with url: "/update" do |form| %>
                     <div class="col">
                         <div class="mb-3">
@@ -117,7 +116,7 @@
                     <div style="margin-top:10px;">
                     </div>
                     <% end %>
-            <% else %>
+            <% elsif user_response.nil? %>
                 <%= bootstrap_form_with url: "/create" do |form| %> 
                     <div class="col">
                         <div class="mb-3">
@@ -136,7 +135,6 @@
                 <% end %>
             <% end %>
             <% end %>  
-            <% end %>
             <% end %>
             </div>
             <div class="col-md-6">
