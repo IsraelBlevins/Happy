@@ -78,7 +78,7 @@ class HomeController < ApplicationController
     respond_to do |format|
       if @user_response.update(user_response_params)
         format.html { redirect_to home_index_path(@user), notice: "Response was successfully updated." }
-        format.json { render :show, status: :ok, location: @user_responses }
+        format.json { render :show, status: :ok, location: @user_response }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @user_response.errors, status: :unprocessable_entity }
@@ -89,7 +89,7 @@ class HomeController < ApplicationController
   private
 
   def set_response
-      @user_response = UserResponse.find(params[:response])
+      @user_response = UserResponse.find(params[:user_id])
   end
 
   def user_response_params
