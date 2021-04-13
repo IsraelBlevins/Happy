@@ -8,7 +8,6 @@
 </script>
 
 
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel= "application.css">
@@ -155,14 +154,14 @@
             <%#Mood Rating Slider%>
             <div class="col-md-6">
             <div>
-                <%if Time.now.hour > 9 && Time.now.hour < 11 %>
+                <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                         <div>
                         <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
                         </div>
                         <div style="margin-top:10px;">
                         </div>
-                        <%= form.range_field :rating,  label: "How are you feeling this morning?", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                        <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
                         <p id="sliderDisplay"></p>
                         <%= form.hidden_field :user_id, value: current_user.id %>
                         <%= form.hidden_field :morning, value: true %>
@@ -170,14 +169,14 @@
                         <div style="margin-top:10px;">
                         </div>
                         <% end %>
-                <% elsif Time.now.hour > 15 && Time.now.hour < 18 %>
+                <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                         <div>
                         <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
                         </div>
                         <div style="margin-top:10px;">
                         </div>
-                        <%= form.range_field :rating,  label: "How are you feeling this evening?", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                        <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
                         <p id="sliderDisplay"></p>
                         <%= form.hidden_field :user_id, value: current_user.id %>
                         <%= form.hidden_field :morning, value: false %>
