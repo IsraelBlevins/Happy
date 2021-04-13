@@ -41,9 +41,9 @@ ActiveRecord::Schema.define(version: 2021_04_12_223334) do
   create_table "mood_ratings", force: :cascade do |t|
     t.integer "user_id"
     t.integer "rating"
+    t.boolean "morning", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "morning"
   end
 
   create_table "user_responses", force: :cascade do |t|

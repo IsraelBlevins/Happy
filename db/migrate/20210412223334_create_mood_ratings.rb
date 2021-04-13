@@ -3,7 +3,7 @@ class CreateMoodRatings < ActiveRecord::Migration[6.0]
     create_table :mood_ratings do |t|
       t.integer "user_id"
       t.integer "rating"
-      t.boolean "morning"
+      t.boolean "morning", :default => 0
       t.timestamps
     end
   end
