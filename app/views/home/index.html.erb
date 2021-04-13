@@ -110,7 +110,7 @@
             <% @displayed_questions.each do |displayed_question| %>
             <% @notDisplayed = true %>
             <% @user_responses.each do |user_response| %>
-            <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id %>
+            <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && user_response.response_date == Date.today %>
                     <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                     <div class="col">
                         <div class="mb-3">
