@@ -98,10 +98,10 @@
         </div>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
-            <% @user_responses.each do |user_response| %>
             <%if displayed_question.question_type == "Free Form" %>
-            <%if displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && displayed_question.created_at.to_date == user_response.response_date.to_date%>
-                <%= bootstrap_form_with url: "/update" do |form| %>
+            <% @user_responses.each do |user_response| %>
+            <%if displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && displayed_question.created_at.to_date == user_response.response_date %>
+                    <%= bootstrap_form_with url: "/update" do |form| %>
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response %>
@@ -116,9 +116,8 @@
                     </div>
                     <div style="margin-top:10px;">
                     </div>
-                <% end %>    
-                
-            <% else %>    
+                    <% end %>
+            <% else %>
                 <%= bootstrap_form_with url: "/create" do |form| %> 
                     <div class="col">
                         <div class="mb-3">
@@ -136,14 +135,34 @@
                     </div>
                 <% end %>
             <% end %>
-            <% end %>    
+            <% end %>  
             <% end %>
             <% end %>
             </div>
             <div class="col-md-6">
-            <h4>How are you feeling right now?</h4>
             <div>
-                <input type="range" min="1" max="9" value="4" class="slider" id="customRange1" style="width:100%">
+                <%if Time.now.hour < 12 %>
+                    <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                        <%= form.range_field :rating, label: "How are you feeling this morning?", in: 1..9 %>
+                        <%= form.hidden_field :user_id, value: current_user.id %>
+                        <%= form.hidden_field :morning, value: true %>
+                        <%= form.submit "Save", class: "btn btn-warning" %>
+                    <% end %>
+                        <div style="margin-top:10px;">
+                        </div>
+                <% else %>
+                    <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                        <%= form.range_field :rating, label: "How are you feeling this evening?", :in => 1..9, :step => 1 %>
+                        <%= form.label :rating, "Current Value: "%>
+                        <div style="margin-top:10px;">
+                        </div>
+                        <%= form.hidden_field :user_id, value: current_user.id %>
+                        <%= form.hidden_field :morning, value: false %>
+                        <%= form.submit "Save", class: "btn btn-warning" %>
+                    <% end %>
+                        <div style="margin-top:10px;">
+                        </div>
+                <% end %>
             </div>
             <div>
                 <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 

@@ -26,6 +26,28 @@ class HomeController < ApplicationController
     end
   end
 
+  def newMoodRating
+    @mood_rating = MoodRating.new
+  end
+
+  def createMoodRating
+    @mood_rating = MoodRating.new(mood_rating_params)
+
+    respond_to do |format|
+      if @mood_rating.save
+        format.html { redirect_to home_index_path(@user), notice: 'Mood successfully saved.' }
+        format.json { render :show, status: :created, location: @mood_rating }
+      else
+        format.html { render :new }
+        format.json { render json: @mood_rating.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def mood_rating_params
+      params.permit(:user_id, :rating, :morning)
+  end
+
   def displayed_question_params
     params.permit(:question, :question_type)
   end
