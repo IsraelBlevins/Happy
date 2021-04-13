@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         log_in @user
-        format.html { redirect_to home_index_path(@user), notice: "User was successfully created." }
+        format.html { redirect_to home_index_path(uid: @user.id), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to home_index_path(@user), notice: "User was successfully updated." }
+        format.html { redirect_to home_index_path(uid: @user.id), notice: "User was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -65,6 +65,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.fetch(:user, {}).permit(:display_name, :email, :password, :password_confirmation, :group_id, :image, :superUser)
+      params.fetch(:user, {}).permit(:display_name, :email, :password, :password_confirmation, :group_id, :image, :remote_image_url, :superUser)
     end
 end

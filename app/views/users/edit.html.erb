@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <%= link_to "Check-Ins", home_index_path, :class => "nav-link"%>
+          <%= link_to "Check-Ins", home_index_path(uid: current_user.id), :class => "nav-link"%>
         </li>
         <li class="nav-item">
           <%= link_to "My Group", group_index_path, :class => "nav-link"%>
@@ -56,10 +56,9 @@
      
     <%if current_user == @user %>
       <tr>
-        <p>
-            <%= form.label :image, "Profile Picture" %>
-            <%= form.file_field :image%>
-        </p>
+          <th><%= form.label :remote_image_url, "Profile Picture" %></th>
+          <td><%= form.text_field :remote_image_url %></td>
+          <th><%= "(enter an image URL)" %></th>
       </tr>
       <tr>
         <th><%= form.label :display_name, "Display Name:" %>  </th>
@@ -92,7 +91,6 @@
   </table>
 
   <br>
-
     <%= form.submit "Save edit", class: "btn btn-primary" %>
   </div>
 <% end %>
