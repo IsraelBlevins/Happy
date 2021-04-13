@@ -50,23 +50,68 @@
 <h2 class="text-center">My Group</h2>
 <br>
 
-<%# Group member card %>
 <% if current_user.group_id != nil %>
-  <table>
-    <thead>
-      <tr>
-        <th>Username</th>
-      </tr>
-    </thead>
+<div class="container-fluid" id="calendar_grid" style="min-width: 1000px">
+  <%# Header row %>
+  <div class="row text-center">
+    <div class="col col-3">
+      GROUP MEMBER
+    </div>
+    <div class="col">
+      SUN
+    </div>
+    <div class="col">
+      MON
+    </div>
+    <div class="col">
+      TUE
+    </div>
+    <div class="col">
+      WED
+    </div>
+    <div class="col">
+      THU
+    </div>
+    <div class="col">
+      FRI
+    </div>
+    <div class="col">
+      SAT
+    </div>
+  </div>
 
-    <tbody>
-      <% @group_members.each do |group_member| %>
-        <tr>
-          <td><%= link_to group_member.display_name, home_index_path(group_member) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<% @group_members.each do |group_member| %>
+  <div class="row">
+    <div class="col col-3">
+      <%= link_to group_member.display_name, home_index_path(group_member) %>
+    </div>
+    <div class="col">
+      <%# Sunday %>
+    </div>
+    <div class="col">
+      <%# Monday %>
+    </div>
+    <div class="col">
+      <%# Tuesday %>
+    </div>
+    <div class="col">
+      <%# Wednesday %>
+    </div>
+    <div class="col">
+      <%# Thursday %>
+    </div>
+    <div class="col">
+      <%# Friday %>
+    </div>
+    <div class="col">
+      <%# Saturday %>
+    </div>
+  </div>
+<% end %>
+
+</div> <%# End of calendar grid %>
+
+  
 <% else %>
     <p class="text-center">You are not currently in a group.</p>
 <% end %>
