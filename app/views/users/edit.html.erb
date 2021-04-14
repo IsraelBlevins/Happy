@@ -78,6 +78,10 @@
         <th><%= form.label :group_id, "Group:" %> </th>
         <td><%= form.number_field :group_id %></td>
       </tr> 
+      <tr>
+        <th><%= form.label :superUser, "Admin Role?" %></th>
+        <th><%= form.select :superUser, options_for_select([[@user.superUser, ""], "true", "false"]), {} %></th>
+      </tr>
     <%end%>
   </table>
 
