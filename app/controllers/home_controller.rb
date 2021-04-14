@@ -111,7 +111,7 @@ class HomeController < ApplicationController
   end
 
   def user_response_params
-    params.permit(:id, :user_id, :question_asked, :response_type, :response_date, :response)
+    params.permit(:id, :user_id, :question_asked, :response_type, :response_date, :response, :checked_off)
   end
 
 

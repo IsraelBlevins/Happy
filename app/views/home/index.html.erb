@@ -5,6 +5,12 @@
     {
         document.getElementById('sliderDisplay').innerHTML = "Current Rating: " + val;
     }
+
+    function addBox() 
+    {
+        $("#dynamic-inputs").append($("#original-inputs").html())
+    }
+
 </script>
 
 
@@ -59,52 +65,58 @@
         <div class="col-md-12">
             <h2>Welcome to your Daily Check-Ins, <%= current_user.display_name %>!</h2>
         </div>
+        <div style="margin-top:10px;">
+        </div>
     </div>
     <%#Checkboxes%>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-            <h3>Enter up to 5 goals you want to accomplish this week</h3>
-            <div class="pull-left">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
-            </div>
-            <div class="pull-left">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
-            </div>
-            <div class="pull-left">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
-            </div>
-            <div class="pull-left">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
-            </div>
-            <div class="pull-left">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Eat one fruit today!">
-            </div>
+            <% @displayed_questions.each do | displayed_question | %>
+                <% if displayed_question.question_type == "Check Box"%>
+                    <div class ="form-inline">
+                        <p><%= displayed_question.question %></p>
+                    <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
+                            <div class="input-group">
+                                <%= form.text_field :response, label: "<span></span>".html_safe, size: "50x10" %>
+                                <%= form.hidden_field :checked_off, value: false %>
+                                <%= form.hidden_field :user_id, value: current_user.id %>
+                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                <%= form.hidden_field :response_type, value: "Check Box" %>
+                                <%= form.hidden_field :response_date, value: Date.today %>
+                                <%= form.submit "Add", class: "btn btn-warning" %>
+                            </div>
+                    <% end %>
+                    </div>
+                    <div style="margin-top:10px;">
+                    </div>
+            <% end %>
+            <% @user_responses.each do |user_response| %>
+                <%if displayed_question.question_type == "Check Box" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && user_response.response_date.to_date == Date.today %>
+                    <div class ="form-inline">
+                    <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
+                        <div class="input-group">
+                                <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: user_response.checked_off, onclick: "this.form.submit()" %>
+                                <%= form.label user_response.response %>
+                                <%= form.hidden_field :user_id, value: current_user.id %>
+                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                <%= form.hidden_field :response_type, value: "Check Box" %>
+                                <%= form.hidden_field :response_date, value: Date.today %>
+                                <%= form.hidden_field :id, value: user_response.id%>
+                        </div>
+                            <div style="margin-top:10px;">
+                            </div>
+                    </div>
+                    <% end %>
+                <% end %>
+            <% end %>
+            <% end %>
+    <%#Comments%>
             <h3>Group Comments</h3>
             <% @comments.each do |comment| %>
                 <p><%= comment.comment %></p>
             <% end %>
-            <h2>My Tracking</h2>
-            <p class="font-weight-bold">This Week</p>
-            <figure class="figure">
-                <img src="sampleGraph.jpg" class="figure-img img-fluid rounded" alt="..." style="width: 375px">
-            </figure>
-        </div>
+    </div>
             <%#Free Form Questions%>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
@@ -131,7 +143,7 @@
                     <% end %>
             <% end %>
             <% end %>
-            <%if @notDisplayed %>  
+            <%if @notDisplayed && displayed_question.question_type == "Free Form" %>  
                     <%= bootstrap_form_with url: "/create" do |form| %> 
                     <div class="col">
                         <div class="mb-3">
@@ -195,7 +207,7 @@
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :question, label: "Enter your Question here", size: "10x10" %>
-                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Homework"]), {}, {class: "form form-group form-control" } %>
+                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Homework", "Check Box"]), {}, {class: "form form-group form-control" } %>
                         </div>
                         <div>
                             <%= form.submit "Save", class: "btn btn-warning" %>
