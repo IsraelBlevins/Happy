@@ -9,5 +9,4 @@ class User < ApplicationRecord
   validates :email, presence: true, format: { with: EMAIL_FORMAT }, uniqueness: true
   #validates :password, presence: true, length:{ minimum:5 }
   #validates :password_confirmation, presence: true
-  mount_uploader :image, ImageUploader
 end
