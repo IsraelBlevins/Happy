@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       #session[:user_id] = user.id
       log_in user
-      redirect_to home_index_path(user)
+      redirect_to home_index_path(uid: user.id)
     else
       flash.now[:danger] = 'Bad email/password combination. Try again.'
       render 'new'
