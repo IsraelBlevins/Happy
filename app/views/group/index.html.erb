@@ -81,56 +81,131 @@
     </div>
   </div>
 
+<% @starDisplayed = false %>
+
 <% @group_members.each do |group_member| %>
   <div class="row">
-    <div class="col col-3">
+    <div class="col col-3 pt-2 pb-2">
       <img src="<%=group_member.image%>" alt="Profile Picture" class="avatar">
       <%= link_to group_member.display_name, home_index_path(uid: group_member.id) %>
     </div>
-    <div class="col">
+    <div class="col text-center pt-2">
       <%# Sunday %>
+      <% if Date::DAYNAMES.index(Date.today.strftime("%A")) >= 0 %>
+        <% @user_responses.each do |user_response| %>
+          <% if group_member.id == user_response.user_id && user_response.response_date.to_date == prior_weekday(Date.today, 'Sunday')%>
+            <i class="bi bi-star-fill text-warning" style="font-size: 2rem"></i>
+            <% @starDisplayed = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if !@starDisplayed %>
+          <i class="bi bi-star text-warning" style="font-size: 2rem"></i>
+        <% end %>
+        <% @starDisplayed = false %>
+      <% end %>
     </div>
-    <div class="col">
+    <div class="col text-center pt-2">
       <%# Monday %>
+      <% if Date::DAYNAMES.index(Date.today.strftime("%A")) >= 1 %>
+       <% @user_responses.each do |user_response| %>
+          <% if group_member.id == user_response.user_id && user_response.response_date.to_date == prior_weekday(Date.today, 'Monday')%>
+            <i class="bi bi-star-fill text-warning" style="font-size: 2rem"></i>
+            <% @starDisplayed = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if !@starDisplayed %>
+          <i class="bi bi-star text-warning" style="font-size: 2rem"></i>
+        <% end %>
+        <% @starDisplayed = false %>
+      <% end %>
     </div>
-    <div class="col">
+    <div class="col text-center pt-2">
       <%# Tuesday %>
+      <% if Date::DAYNAMES.index(Date.today.strftime("%A")) >= 2 %>
+        <% @user_responses.each do |user_response| %>
+          <% if group_member.id == user_response.user_id && user_response.response_date.to_date == prior_weekday(Date.today, 'Tuesday')%>
+            <i class="bi bi-star-fill text-warning" style="font-size: 2rem"></i>
+            <% @starDisplayed = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if !@starDisplayed %>
+          <i class="bi bi-star text-warning" style="font-size: 2rem"></i>
+        <% end %>
+        <% @starDisplayed = false %>
+      <% end %>
     </div>
-    <div class="col">
+    <div class="col text-center pt-2">
       <%# Wednesday %>
+      <% if Date::DAYNAMES.index(Date.today.strftime("%A")) >= 3 %>
+        <% @user_responses.each do |user_response| %>
+          <% if group_member.id == user_response.user_id && user_response.response_date.to_date == prior_weekday(Date.today, 'Wednesday')%>
+            <i class="bi bi-star-fill text-warning" style="font-size: 2rem"></i>
+            <% @starDisplayed = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if !@starDisplayed %>
+          <i class="bi bi-star text-warning" style="font-size: 2rem"></i>
+        <% end %>
+        <% @starDisplayed = false %>
+      <% end %>
     </div>
-    <div class="col">
+    <div class="col text-center pt-2">
       <%# Thursday %>
+      <% if Date::DAYNAMES.index(Date.today.strftime("%A")) >= 4 %>
+        <% @user_responses.each do |user_response| %>
+          <% if group_member.id == user_response.user_id && user_response.response_date.to_date == prior_weekday(Date.today, 'Thursday')%>
+            <i class="bi bi-star-fill text-warning" style="font-size: 2rem"></i>
+            <% @starDisplayed = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if !@starDisplayed %>
+          <i class="bi bi-star text-warning" style="font-size: 2rem"></i>
+        <% end %>
+        <% @starDisplayed = false %>
+      <% end %>
     </div>
-    <div class="col">
+    <div class="col text-center pt-2">
       <%# Friday %>
+      <% if Date::DAYNAMES.index(Date.today.strftime("%A")) >= 5 %>
+        <% @user_responses.each do |user_response| %>
+          <% if group_member.id == user_response.user_id && user_response.response_date.to_date == prior_weekday(Date.today, 'Friday')%>
+            <i class="bi bi-star-fill text-warning" style="font-size: 2rem"></i>
+            <% @starDisplayed = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if !@starDisplayed %>
+          <i class="bi bi-star text-warning" style="font-size: 2rem"></i>
+        <% end %>
+        <% @starDisplayed = false %>
+      <% end %>
     </div>
-    <div class="col">
+    <div class="col text-center pt-2">
       <%# Saturday %>
+      <% if Date::DAYNAMES.index(Date.today.strftime("%A")) >= 6 %>
+        <% @user_responses.each do |user_response| %>
+          <% if group_member.id == user_response.user_id && user_response.response_date.to_date == prior_weekday(Date.today, 'Saturday')%>
+            <i class="bi bi-star-fill text-warning" style="font-size: 2rem"></i>
+            <% @starDisplayed = true %>
+            <% break %>
+          <% end %>
+        <% end %>
+        <% if !@starDisplayed %>
+          <i class="bi bi-star text-warning" style="font-size: 2rem"></i>
+        <% end %>
+        <% @starDisplayed = false %>
+      <% end %>
     </div>
   </div>
 <% end %>
 
 </div> <%# End of calendar grid %>
 
-  
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Username</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @group_members.each do |group_member| %>
-        <tr>
-          <td><img src="<%=group_member.image%>" alt="Profile Picture" class="avatar"></td>
-          <td><%= link_to group_member.display_name, home_index_path(uid: group_member.id) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
 <% else %>
     <p class="text-center">You are not currently in a group.</p>
 <% end %>
