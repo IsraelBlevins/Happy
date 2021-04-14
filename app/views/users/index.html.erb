@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <%= link_to "Check-Ins", home_index_path, :class => "nav-link"%>
+          <%= link_to "Check-Ins", home_index_path(uid: current_user.id), :class => "nav-link"%>
         </li>
         <li class="nav-item">
           <%= link_to "My Group", group_index_path, :class => "nav-link"%>
@@ -46,7 +46,8 @@
 <table>
   <thead>
     <tr>
-      <th>display_name</th>
+      <th></th>
+      <th>Username</th>
       <th>Email</th>
       <th>Group</th>
       <th>Role</th>
@@ -57,7 +58,8 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to user.display_name, home_index_path(user) %></td>
+        <td><img src="<%=user.image%>" alt="Profile Picture" class="avatar"></td>
+        <td><%= link_to user.display_name, home_index_path(uid: user.id) %></td>
         <td><%= user.email %></td>
         <td><%= user.group_id %></td>
         <td>
