@@ -8,6 +8,12 @@ class HomeController < ApplicationController
     @user_responses = UserResponse.all()
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
+
+    if current_user.id == :uid
+      @referenced_user = current_user
+    else
+      @referenced_user = User.find(params[:uid])
+    end
   end
 
   def newQuestion
@@ -20,7 +26,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       if @displayed_question.save
-        format.html { redirect_to home_index_path(@user), notice: 'New Question was successfully saved.' }
+        format.html { redirect_to home_index_path(uid: current_user.id), notice: 'New Question was successfully saved.' }
         format.json { render :show, status: :created, location: @displayed_questions }
       else
         format.html { render :new }
@@ -80,7 +86,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       if @user_response.save
-        format.html { redirect_to home_index_path(@user), notice: 'Response was successfully saved.' }
+        format.html { redirect_to home_index_path(uid: current_user.id), notice: 'Response was successfully saved.' }
         format.json { render :show, status: :created, location: @user_responses }
       else
         format.html { render :new }
