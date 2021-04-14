@@ -44,7 +44,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       if @mood_rating.save
-        format.html { redirect_to home_index_path(@user), notice: 'Mood successfully saved.' }
+        format.html { redirect_to home_index_path(uid: current_user.id), notice: 'Mood successfully saved.' }
         format.json { render :show, status: :created, location: @mood_rating }
       else
         format.html { render :new }
@@ -53,17 +53,6 @@ class HomeController < ApplicationController
     end
   end
   
-  def updateMoodRating
-    respond_to do |format|
-      if @mood_rating.update_attributes(mood_rating_params)
-        format.html { redirect_to home_index_path(@user), notice: "Mood was successfully updated." }
-        format.json { render :show, status: :ok, location: @user_response }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user_response.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   def mood_rating_params
       params.permit(:user_id, :rating, :morning)
@@ -98,7 +87,7 @@ class HomeController < ApplicationController
   def update
     respond_to do |format|
       if @user_response.update_attributes(user_response_params)
-        format.html { redirect_to home_index_path(@user), notice: "Response was successfully updated." }
+        format.html { redirect_to home_index_path(uid: current_user.id), notice: "Response was successfully updated." }
         format.json { render :show, status: :ok, location: @user_response }
       else
         format.html { render :edit, status: :unprocessable_entity }
