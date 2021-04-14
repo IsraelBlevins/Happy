@@ -57,9 +57,9 @@
      
     <%if current_user == @user %>
       <tr>
-          <th><%= form.label :image, "Profile Picture" %></th>
-          <td><%= form.text_field :image, placeholder: 'URL' %></td>
-          <th><%= "(enter an image URL)" %></th>
+        <th><%= form.label :image, "Profile Picture" %></th>
+        <td><%= form.text_field :image, placeholder: 'URL' %></td>
+        <th><%= "(enter an image URL)" %></th>
       </tr>
       <tr>
         <th><%= form.label :display_name, "Display Name:" %>  </th>
