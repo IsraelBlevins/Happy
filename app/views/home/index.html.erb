@@ -91,20 +91,27 @@
             <h3>Group Comments</h3>
 
             <div style="height:300px;overflow:auto;">
-               <%= render current_user.comment %>
+              <% @users.each do |user| %>
+                <% if user.id != @referenced_user.id && user.group_id == @referenced_user.group_id %>
+                  <%= render user.comment, pageID: @referenced_user.id %>
+                <% end %>
+              <% end %>
             </div>
 
-            <div class="card my-1">
-              <div class="card-body">
-                <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
-                  <div class="form-group">
-                    <%= f.label 'New comment' %>
-                    <%= f.text_area :body, class: 'form-control' %>
-                  </div>
-                  <%= f.submit 'Submit', class: 'btn btn-primary' %>
-                <% end %>
+            <% if current_user.id != @referenced_user.id %>
+              <div class="card my-1">
+                <div class="card-body">
+                  <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
+                    <%= f.hidden_field :recipient_ID, value: @referenced_user.id.to_s%>
+                    <div class="form-group">
+                      <%= f.label 'New comment' %>
+                      <%= f.text_area :body, class: 'form-control' %>
+                    </div>
+                    <%= f.submit 'Submit', class: 'btn btn-primary' %>
+                  <% end %>
+                </div>
               </div>
-            </div>
+            <% end %>
 
             <h2>My Tracking</h2>
             <p class="font-weight-bold">This Week</p>

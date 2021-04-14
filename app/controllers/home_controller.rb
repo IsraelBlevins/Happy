@@ -1,10 +1,9 @@
 class HomeController < ApplicationController
   def index
     @displayed_questions = DisplayedQuestion.all()
-    @comments = Comment.all()
-    #@referenced_user = User.find(params[:uid]) unless logged_in?
     @user_responses = UserResponse.all()
     @user_response = UserResponse.new(user_response_params)
+    @users = User.all()
     @displayed_questions = DisplayedQuestion.all()
 
     if current_user.id == :uid
