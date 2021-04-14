@@ -7,6 +7,7 @@
 
 <%# Navbar %>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <img src="<%=current_user.image%>" alt="Profile Picture" class="avatar">
   <div class="container-fluid">
     <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +64,7 @@
     <tbody>
       <% @group_members.each do |group_member| %>
         <tr>
-          <td><%= image_tag group_member.image_url(:thumb).to_s%></td>
+          <td><img src="<%=group_member.image%>" alt="Profile Picture" class="avatar"></td>
           <td><%= link_to group_member.display_name, home_index_path(uid: group_member.id) %></td>
         </tr>
       <% end %>

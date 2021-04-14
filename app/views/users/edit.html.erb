@@ -1,5 +1,6 @@
 <%# Navbar %>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <img src="<%=current_user.image%>" alt="Profile Picture" class="avatar">
   <div class="container-fluid">
     <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,8 +57,8 @@
      
     <%if current_user == @user %>
       <tr>
-          <th><%= form.label :remote_image_url, "Profile Picture" %></th>
-          <td><%= form.text_field :remote_image_url %></td>
+          <th><%= form.label :image, "Profile Picture" %></th>
+          <td><%= form.text_field :image %></td>
           <th><%= "(enter an image URL)" %></th>
       </tr>
       <tr>

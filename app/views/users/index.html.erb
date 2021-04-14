@@ -57,7 +57,7 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= image_tag user.image_url(:thumb).to_s%></td>
+        <td><img src="<%=user.image%>" alt="Profile Picture" class="avatar"></td>
         <td><%= link_to user.display_name, home_index_path(uid: user.id) %></td>
         <td><%= user.email %></td>
         <td><%= user.group_id %></td>
