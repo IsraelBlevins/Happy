@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_223334) do
     t.string "response_type"
     t.string "response"
     t.datetime "response_date"
+    t.boolean "checked_off", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
