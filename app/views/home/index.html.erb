@@ -73,45 +73,45 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-            <% @displayed_questions.each do | displayed_question | %>
-                <% if displayed_question.question_type == "Check Box"%>
-                    <div class ="form-inline">
-                        <p><%= displayed_question.question %></p>
-                    <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
-                            <div class="input-group">
-                                <%= form.text_field :response, label: "<span></span>".html_safe, size: "50x10" %>
-                                <%= form.hidden_field :checked_off, value: false %>
-                                <%= form.hidden_field :user_id, value: current_user.id %>
-                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                                <%= form.hidden_field :response_type, value: "Check Box" %>
-                                <%= form.hidden_field :response_date, value: Date.today %>
-                                <%= form.submit "Add", class: "btn btn-warning" %>
-                            </div>
-                    <% end %>
-                    </div>
-                    <div style="margin-top:10px;">
-                    </div>
-            <% end %>
-            <% @user_responses.each do |user_response| %>
-                <%if displayed_question.question_type == "Check Box" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && user_response.response_date.to_date == Date.today %>
-                    <div class ="form-inline">
-                    <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
-                        <div class="input-group">
-                                <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: user_response.checked_off, onclick: "this.form.submit()" %>
-                                <%= form.label user_response.response %>
-                                <%= form.hidden_field :user_id, value: current_user.id %>
-                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                                <%= form.hidden_field :response_type, value: "Check Box" %>
-                                <%= form.hidden_field :response_date, value: Date.today %>
-                                <%= form.hidden_field :id, value: user_response.id%>
+                <% @displayed_questions.each do | displayed_question | %>
+                    <% if displayed_question.question_type == "Check Box"%>
+                        <div class ="form-inline">
+                            <p><%= displayed_question.question %></p>
+                            <%if current_user.id == @referenced_user.id%>
+                                <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
+                                <div class="input-group">
+                                    <%= form.text_field :response, label: "<span></span>".html_safe, size: "50x10" %>
+                                    <%= form.hidden_field :checked_off, value: false %>
+                                    <%= form.hidden_field :user_id, value: current_user.id %>
+                                    <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                    <%= form.hidden_field :response_type, value: "Check Box" %>
+                                    <%= form.hidden_field :response_date, value: Date.today %>
+                                    <%= form.submit "Add", class: "btn btn-warning" %>
+                                </div>
+                                <% end %>
+                            <% end %>
                         </div>
-                            <div style="margin-top:10px;">
-                            </div>
-                    </div>
+                        <div style="margin-top:10px;"></div>
+                    <% end %>
+                    <% @user_responses.each do |user_response| %>
+                        <%if displayed_question.question_type == "Check Box" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date == Date.today %>
+                            <div class ="form-inline">
+                                <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
+                                    <div class="input-group">
+                                        <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: user_response.checked_off, onclick: "this.form.submit()", disabled: @referenced_user.id != current_user.id %>
+                                        <%= form.label user_response.response %>
+                                        <%= form.hidden_field :user_id, value: current_user.id %>
+                                        <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                        <%= form.hidden_field :response_type, value: "Check Box" %>
+                                        <%= form.hidden_field :response_date, value: Date.today %>
+                                        <%= form.hidden_field :id, value: user_response.id%>
+                                    </div>
+                                    <div style="margin-top:10px;"></div>
+                                <% end %>
+                            </div>     
+                        <% end %>
                     <% end %>
                 <% end %>
-            <% end %>
-            <% end %>
     <%#Comments%>
             <h3>Group Comments</h3>
             <% @comments.each do |comment| %>
@@ -121,82 +121,95 @@
             <%#Free Form Questions%>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
-            <% @notDisplayed = true %>
-            <% @user_responses.each do |user_response| %>
-            <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == current_user.id && user_response.response_date.to_date == Date.today %>
-                    <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
-                    <div class="col">
-                        <div class="mb-3">
-                            <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response %>
-                            <%= form.hidden_field :user_id, value: current_user.id %>
-                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                            <%= form.hidden_field :response_type, value: "Free Form" %>
-                            <%= form.hidden_field :response_date, value: Date.today %>
-                            <%= form.hidden_field :id, value: user_response.id%>
-                            <% @notDisplayed = false %>
-                        </div>
-                    </div>
-                    <div>
-                        <%= form.submit "Update", class: "btn btn-warning"%>
-                    </div>
-                    <div style="margin-top:10px;">
-                    </div>
+                <% @notDisplayed = true %>
+                <% @user_responses.each do |user_response| %>
+                    <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date == Date.today %>
+                        <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response %>
+                                    <%= form.hidden_field :user_id, value: current_user.id %>
+                                    <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                    <%= form.hidden_field :response_type, value: "Free Form" %>
+                                    <%= form.hidden_field :response_date, value: Date.today %>
+                                    <%= form.hidden_field :id, value: user_response.id%>
+                                    <% @notDisplayed = false %>
+                                </div>
+                            </div>
+                            <div>
+                                <%if current_user.id == @referenced_user.id%>
+                                    <%= form.submit "Update", class: "btn btn-warning"%>
+                                <% end %>
+                            </div>
+                            <div style="margin-top:10px;">
+                            </div>
+                        <% end %>
                     <% end %>
-            <% end %>
-            <% end %>
-            <%if @notDisplayed && displayed_question.question_type == "Free Form" %>  
-                    <%= bootstrap_form_with url: "/create" do |form| %> 
-                    <div class="col">
-                        <div class="mb-3">
-                            <%= form.text_area :response, label: displayed_question.question, size: "100x10" %>
-                            <%= form.hidden_field :user_id, value: current_user.id %>
-                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                            <%= form.hidden_field :response_type, value: "Free Form" %>
-                            <%= form.hidden_field :response_date, value: Date.today %>
-                        </div>
-                        <div>
-                            <%= form.submit "Save", class: "btn btn-warning" %>
-                        </div>
-                        <div style="margin-top:10px;">
-                        </div>
-                    </div>
                 <% end %>
-            <% end %>
+                <%if @notDisplayed && displayed_question.question_type == "Free Form" %>  
+                    <%= bootstrap_form_with url: "/create" do |form| %> 
+                        <div class="col">
+                            <div class="mb-3">
+                                <%= form.text_area :response, label: displayed_question.question, size: "100x10" %>
+                                <%= form.hidden_field :user_id, value: current_user.id %>
+                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                <%= form.hidden_field :response_type, value: "Free Form" %>
+                                <%= form.hidden_field :response_date, value: Date.today %>
+                            </div>
+                            <div>
+                                <%if current_user.id == @referenced_user.id%>
+                                <%= form.submit "Save", class: "btn btn-warning" %>
+                                <% end %>
+                            </div>
+                            <div style="margin-top:10px;"></div>
+                        </div>
+                    <% end %>
+                <% end %>
             <% end %>
             </div>
             <%#Mood Rating Slider%>
             <div class="col-md-6">
             <div>
-                <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
-                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                        <div>
-                        <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
-                        </div>
-                        <div style="margin-top:10px;">
-                        </div>
-                        <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
-                        <p id="sliderDisplay"></p>
-                        <%= form.hidden_field :user_id, value: current_user.id %>
-                        <%= form.hidden_field :morning, value: true %>
-                        <%= form.submit "Save", class: "btn btn-warning" %>
-                        <div style="margin-top:10px;">
-                        </div>
+                <%if current_user.id == @referenced_user.id%>
+                    <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
+                        <% @mood_ratings.each do |mood_rating| %>
+                            <%if mood_rating.user_id == current_user.id && mood_rating.morning && user_response.created_at.to_date == Date.today %>
+                                <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                                <div>
+                                <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                                </div>
+                                <div style="margin-top:10px;">
+                                </div>
+                                <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                                <p id="sliderDisplay"></p>
+                                <%= form.hidden_field :user_id, value: current_user.id %>
+                                <%= form.hidden_field :morning, value: true %>
+                                <%= form.submit "Save", class: "btn btn-warning" %>
+                                <div style="margin-top:10px;">
+                                </div>
+                                <% end %>
+                            <% end %>
                         <% end %>
-                <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
-                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                        <div>
-                        <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
-                        </div>
-                        <div style="margin-top:10px;">
-                        </div>
-                        <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
-                        <p id="sliderDisplay"></p>
-                        <%= form.hidden_field :user_id, value: current_user.id %>
-                        <%= form.hidden_field :morning, value: false %>
-                        <%= form.submit "Save", class: "btn btn-warning" %>
-                        <div style="margin-top:10px;">
-                        </div>
-                        <% end %>
+                    <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
+                     <% @mood_ratings.each do |mood_rating| %>
+                            <%if mood_rating.user_id == current_user.id && !mood_rating.morning  && user_response.created_at.to_date == Date.today %>
+                                <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                                <div>
+                                <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                                </div>
+                                <div style="margin-top:10px;">
+                                </div>
+                                <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                                <p id="sliderDisplay"></p>
+                                <%= form.hidden_field :user_id, value: current_user.id %>
+                                <%= form.hidden_field :morning, value: false %>
+                                <%= form.submit "Save", class: "btn btn-warning" %>
+                                <div style="margin-top:10px;">
+                                </div>
+                                <% end %>
+                            <% end %>
+                    <% end %>
+                <% end %>
                 <% end %>
             </div>
         </div>
