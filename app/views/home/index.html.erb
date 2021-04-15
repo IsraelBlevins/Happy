@@ -122,12 +122,14 @@
                         <% end %>
                     <% end %>
                 <% end %>
-    <%#Comments%>
+
+            <%#Comments%>
             <h3>Group Comments</h3>
             <% @comments.each do |comment| %>
                 <p><%= comment.comment %></p>
             <% end %>
-    </div>
+            </div>
+
             <%#Free Form Questions%>
             <div class="col-md-6">
             <% @displayed_questions.each do |displayed_question| %>
@@ -177,52 +179,64 @@
                 <% end %>
             <% end %>
             </div>
+
             <%#Mood Rating Slider%>
             <div class="col-md-6">
-            <div>
-                <%if current_user.id == @referenced_user.id%>
+                <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
                     <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
-                        <% @mood_ratings.each do |mood_rating| %>
-                            <%if mood_rating.user_id == current_user.id && mood_rating.morning && user_response.created_at.to_date == Date.today %>
-                                <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                                <div>
+                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                            <div>
                                 <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
-                                </div>
-                                <div style="margin-top:10px;">
-                                </div>
-                                <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
-                                <p id="sliderDisplay"></p>
-                                <%= form.hidden_field :user_id, value: current_user.id %>
-                                <%= form.hidden_field :morning, value: true %>
-                                <%= form.submit "Save", class: "btn btn-warning" %>
-                                <div style="margin-top:10px;">
-                                </div>
+                            </div>
+                            <div style="margin-top:10px;"></div>
+                            <%= form.hidden_field :user_id, value: current_user.id %>
+                            <%= form.hidden_field :morning, value: true %>
+
+                            <%# Hide the slider and Save button if they already have responded to it and display their answer %>
+                                <% @alreadyResponded = false %>
+                                <% @mood_ratings.each do |mood_rating| %>
+                                    <% if mood_rating.user_id == current_user.id && mood_rating.morning && mood_rating.created_at.to_date == Date.today%>
+                                        <p>You submitted that you were feeling at a <%= mood_rating.rating %> this morning.</p>
+                                        <% @alreadyResponded = true%>
+                                    <% end %>
                                 <% end %>
-                            <% end %>
+                                <% if !@alreadyResponded %>
+                                    <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                                    <p id="sliderDisplay"></p>
+                                    <%= form.submit "Save", class: "btn btn-warning" %>
+                                <% end %>
+
+                            <div style="margin-top:10px;"></div>
                         <% end %>
-                    <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
-                     <% @mood_ratings.each do |mood_rating| %>
-                            <%if mood_rating.user_id == current_user.id && !mood_rating.morning  && user_response.created_at.to_date == Date.today %>
-                                <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                                <div>
+                    <% elsif Time.now.hour >= 14 && Time.now.hour < 19 %>
+                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                            <div>
                                 <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
-                                </div>
-                                <div style="margin-top:10px;">
-                                </div>
-                                <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
-                                <p id="sliderDisplay"></p>
-                                <%= form.hidden_field :user_id, value: current_user.id %>
-                                <%= form.hidden_field :morning, value: false %>
-                                <%= form.submit "Save", class: "btn btn-warning" %>
-                                <div style="margin-top:10px;">
-                                </div>
+                            </div>
+                            <div style="margin-top:10px;"></div>
+                            <%= form.hidden_field :user_id, value: current_user.id %>
+                            <%= form.hidden_field :morning, value: false %>
+
+                            <%# Hide the slider and Save button if they already have responded to it and display their answer %>
+                                <% @alreadyResponded = false %>
+                                <% @mood_ratings.each do |mood_rating| %>
+                                    <% if mood_rating.user_id == current_user.id && !mood_rating.morning && mood_rating.created_at.to_date == Date.today%>
+                                        <p>You submitted that you were feeling at a <%= mood_rating.rating %> this evening.</p>
+                                        <% @alreadyResponded = true%>
+                                    <% end %>
                                 <% end %>
-                            <% end %>
+                                <% if !@alreadyResponded %>
+                                    <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                                    <p id="sliderDisplay"></p>
+                                    <%= form.submit "Save", class: "btn btn-warning" %>
+                                <% end %>
+                            
+                            <div style="margin-top:10px;"></div>
+                        <% end %>
                     <% end %>
                 <% end %>
-                <% end %>
             </div>
-        </div>
+
         <%# Add A New Question%>
         <%if current_user.superUser && @desired_date == Date.today.to_s && current_user.id == @referenced_user.id %>
         <div class="col-md-6">
