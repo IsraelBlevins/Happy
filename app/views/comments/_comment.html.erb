@@ -1,4 +1,4 @@
-<% if comment.recipient_ID == pageID%>
+<% if comment.recipient_ID == pageID  && comment.comment_date.to_date == Date.today%>
     <% unless !comment.persisted? %>
         <div class="card">
             <div class="card-body">
