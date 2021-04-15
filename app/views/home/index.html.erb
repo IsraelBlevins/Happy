@@ -208,7 +208,7 @@
 
                             <div style="margin-top:10px;"></div>
                         <% end %>
-                    <% elsif Time.now.hour >= 14 && Time.now.hour < 19 %>
+                    <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                             <div>
                                 <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
