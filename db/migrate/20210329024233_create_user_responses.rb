@@ -6,6 +6,7 @@ class CreateUserResponses < ActiveRecord::Migration[6.0]
       t.string  "response_type"
       t.string  "response"
       t.datetime "response_date"
+      t.boolean   "checked_off", :default => 0
       t.timestamps
     end
   end
