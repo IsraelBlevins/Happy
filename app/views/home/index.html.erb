@@ -32,7 +32,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <%= link_to "Check-Ins", home_index_path(uid: current_user.id), :class => "nav-link active"%>
+          <%= link_to "Check-Ins", home_index_path(uid: current_user.id, desired_date: Date.today.to_s), :class => "nav-link active"%>
         </li>
         <li class="nav-item">
           <%= link_to "My Group", group_index_path, :class => "nav-link"%>
@@ -64,7 +64,17 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
+            <%if current_user.id == @referenced_user.id && Date.today.to_s == @desired_date %>
+                <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
+                <h4>Today is <%= @desired_date %>. </h4>
+            <% elsif current_user.id == @referenced_user.id && Date.today.to_s != @desired_date %>
+                <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
+                <h4>You are viewing <%= @desired_date %>. </h4>
+            <% elsif current_user.id != @referenced_user.id && Date.today.to_s == @desired_date %>
+                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins for Today, <%= @desired_date %>.</h2>
+            <% else %>
+                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins on <%= @desired_date %>.</h2>
+            <% end %>
         </div>
         <div style="margin-top:10px;">
         </div>
@@ -77,7 +87,7 @@
                     <% if displayed_question.question_type == "Check Box"%>
                         <div class ="form-inline">
                             <p><%= displayed_question.question %></p>
-                            <%if current_user.id == @referenced_user.id%>
+                            <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
                                 <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
                                 <div class="input-group">
                                     <%= form.text_field :response, label: "<span></span>".html_safe, size: "50x10" %>
@@ -94,11 +104,11 @@
                         <div style="margin-top:10px;"></div>
                     <% end %>
                     <% @user_responses.each do |user_response| %>
-                        <%if displayed_question.question_type == "Check Box" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date == Date.today %>
+                        <%if displayed_question.question_type == "Check Box" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date.to_s == @desired_date %>
                             <div class ="form-inline">
                                 <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                                     <div class="input-group">
-                                        <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: user_response.checked_off, onclick: "this.form.submit()", disabled: @referenced_user.id != current_user.id %>
+                                        <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: user_response.checked_off, onclick: "this.form.submit()", disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
                                         <%= form.label user_response.response %>
                                         <%= form.hidden_field :user_id, value: current_user.id %>
                                         <%= form.hidden_field :question_asked, value: displayed_question.question %>
@@ -123,7 +133,7 @@
             <% @displayed_questions.each do |displayed_question| %>
                 <% @notDisplayed = true %>
                 <% @user_responses.each do |user_response| %>
-                    <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date == Date.today %>
+                    <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date.to_s == @desired_date %>
                         <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                             <div class="col">
                                 <div class="mb-3">
@@ -137,7 +147,7 @@
                                 </div>
                             </div>
                             <div>
-                                <%if current_user.id == @referenced_user.id%>
+                                <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
                                     <%= form.submit "Update", class: "btn btn-warning"%>
                                 <% end %>
                             </div>
@@ -157,8 +167,8 @@
                                 <%= form.hidden_field :response_date, value: Date.today %>
                             </div>
                             <div>
-                                <%if current_user.id == @referenced_user.id%>
-                                <%= form.submit "Save", class: "btn btn-warning" %>
+                                <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
+                                    <%= form.submit "Save", class: "btn btn-warning" %>
                                 <% end %>
                             </div>
                             <div style="margin-top:10px;"></div>
@@ -214,7 +224,7 @@
             </div>
         </div>
         <%# Add A New Question%>
-        <%if current_user.superUser %>
+        <%if current_user.superUser && @desired_date == Date.today.to_s && current_user.id == @referenced_user.id %>
         <div class="col-md-6">
                 <h4>New Question Form</h4>
                 <%= bootstrap_form_with url: "/createQuestion" do |form| %> 
