@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <%= link_to "Check-Ins", home_index_path(uid: current_user.id), :class => "nav-link"%>
+          <%= link_to "Check-Ins", home_index_path(uid: current_user.id, desired_date: Date.today.to_s), :class => "nav-link"%>
         </li>
         <li class="nav-item">
           <%= link_to "My Group", group_index_path, :class => "nav-link"%>
@@ -59,7 +59,7 @@
     <% @users.each do |user| %>
       <tr>
         <td><img src="<%=user.image%>" alt="Profile Picture" class="avatar"></td>
-        <td><%= link_to user.display_name, home_index_path(uid: user.id) %></td>
+        <td><%= link_to user.display_name, home_index_path(uid: user.id, desired_date: Date.today.to_s) %></td>
         <td><%= user.email %></td>
         <td><%= user.group_id %></td>
         <td>
