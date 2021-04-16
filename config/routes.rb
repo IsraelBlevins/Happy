@@ -6,8 +6,10 @@ Rails.application.routes.draw do
   get 'sessions/new' => 'sessions#new'
   get 'home/index' => 'home#index'
   post '/create' => 'home#create'
-  post '/respond' => 'home#respond'
   post '/createQuestion' => 'home#createQuestion'
+  patch '/update' => 'home#update'
+  post '/createMoodRating' => 'home#createMoodRating'
+  patch '/updateMoodRating' => 'home#updateMoodRating'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resources :users do
     resources :comments

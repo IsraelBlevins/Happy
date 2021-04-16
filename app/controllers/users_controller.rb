@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         log_in @user
-        format.html { redirect_to home_index_path(uid: @user.id), notice: "User was successfully created." }
+        format.html { redirect_to home_index_path(uid: @user.id, desired_date: Date.today.to_s), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
           format.html { redirect_to users_url, notice: "User was successfully updated." }
           format.json { render :show, status: :ok, location: @user }
         else
-          format.html { redirect_to home_index_path(uid: @user.id), notice: "User was successfully updated." }
+          format.html { redirect_to home_index_path(uid: @user.id, desired_date: Date.today.to_s), notice: "User was successfully updated." }
           format.json { render :show, status: :ok, location: @user }
         end
       else
