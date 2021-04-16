@@ -44,40 +44,35 @@
 </nav>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Weekly Homework</h1>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="list-group">
-                <% @displayed_questions.each do |displayed_question| %>
-                  <%if displayed_question.question_type == "Homework"%>
-                    <li class="list-group-item"><%=displayed_question.question%></li>
-                  <%end%>
-                <%end%>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Video Title</h1>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lY1M-zWreEg" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
+  <br>
+  <div class="row">
+      <div class="col-12">
+          <h2>Weekly Homework</h1>
+      </div>
+  </div>
+  <br>
+  <div class="row justify-content-center">
+      <div class="col-11">
+          <ul class="list-group">
+          <% @displayed_questions.each do |displayed_question| %>
+            <%if displayed_question.question_type == "Homework"%>
+              <li class="list-group-item"><%=displayed_question.question%></li>
+            <%end%>
+          <%end%>
+          </ul>
+      </div>
+  </div>
+  <br>
+  <div class="row">
+      <div class="col-12">
+          <h4>Video Title</h1>
+      </div>
+  </div>
+  <div class="row justify-content-center">
+      <div class="col-11">
+          <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lY1M-zWreEg" allowfullscreen></iframe>
+          </div>
+      </div>
+  </div>
 </body>
