@@ -63,6 +63,26 @@
                 </ul>
             </div>
         </div>
+
+        <%if current_user.superUser%>
+        <div class="col-md-6">
+                <h4>New Homework Form</h4>
+                <%= bootstrap_form_with url: "/createHW" do |form| %> 
+                    <div class="col">
+                        <div class="mb-3">
+                            <%= form.text_area :question, label: "Enter new Homework here", size: "10x10" %>
+                            <%= form.select :question_type, options_for_select([["Select Type:"], "Homework"]), {}, {class: "form form-group form-control" } %>
+                        </div>
+                        <div>
+                            <%= form.submit "Save", class: "btn btn-warning" %>
+                        </div>
+                        <div style="margin-top:10px;">
+                        </div>
+                    </div>
+                <% end %>
+        </div>
+        <%end%>
+
     </div>
     <div class="container">
         <div class="row">

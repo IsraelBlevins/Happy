@@ -245,7 +245,7 @@
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :question, label: "Enter your Question here", size: "10x10" %>
-                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Homework", "Check Box"]), {}, {class: "form form-group form-control" } %>
+                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Check Box"]), {}, {class: "form form-group form-control" } %>
                         </div>
                         <div>
                             <%= form.submit "Save", class: "btn btn-warning" %>
