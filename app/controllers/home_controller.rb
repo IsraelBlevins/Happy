@@ -8,8 +8,8 @@ class HomeController < ApplicationController
     @users = User.all()
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
+    @user_comments = Comment.all()
 
-    
     if @desired_date != Date.today.to_s
       @desired_date = params[:desired_date]
     end
@@ -19,6 +19,16 @@ class HomeController < ApplicationController
     else
       @referenced_user = User.find(params[:uid])
     end
+    puts current_user.id
+    @cmts = []
+
+    @user_comments.each do |c|
+      @cmts.append(c)
+    end
+            
+    if @cmts.any?
+      @cmts.sort{|a,b| a.comment_time <=> b.comment_time}
+    end 
   end
 
   def newQuestion
@@ -60,7 +70,7 @@ class HomeController < ApplicationController
   
 
   def mood_rating_params
-      params.permit(:user_id, :rating, :morning)
+    params.permit(:user_id, :rating, :morning)
   end
 
   def displayed_question_params

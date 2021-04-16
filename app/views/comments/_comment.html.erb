@@ -1,4 +1,4 @@
-<% if comment.recipient_ID == pageID  && comment.comment_date.to_date == Date.today%>
+<% if comment.recipient_ID == pageID  && comment.comment_date.to_date.to_s == date %>
     <% unless !comment.persisted? %>
         <div class="card">
             <div class="card-body">
@@ -7,7 +7,7 @@
                 </header>
                 <%= comment.body %>
                 <footer style="font-size:12px">
-                    <%= "Posted on " + comment.comment_date.strftime("%b %d, %Y at %-I:%M:%S ") %>
+                    <%= "Posted on " + comment.comment_time.strftime("%b %d, %Y") + comment.comment_time.strftime(" at %-I:%M %p") %>
                 </footer>
             </div>
         </div>

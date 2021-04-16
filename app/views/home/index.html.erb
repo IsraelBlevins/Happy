@@ -125,24 +125,19 @@
 
             <%#Comments%>
             <h3>Group Comments</h3>
-            <% @comments.each do |comment| %>
-                <p><%= comment.comment %></p>
-            <% end %>
-            </div>
 
             <div style="height:300px;overflow:auto;">
-              <% @users.each do |user| %>
-                <% if user.id != @referenced_user.id && user.group_id == @referenced_user.group_id %>
-                  <%= render user.comment, pageID: @referenced_user.id %>
-                <% end %>
+              <% @cmts.each do |c| %>
+                <%= render c, pageID: @referenced_user.id, date: @desired_date %>
               <% end %>
             </div>
 
-            <% if current_user.id != @referenced_user.id %>
+            <% if current_user.id != @referenced_user.id #&& !current_user.superUser && @desired_date == Date.today.to_s %>
               <div class="card my-1">
                 <div class="card-body">
                   <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
                     <%= f.hidden_field :recipient_ID, value: @referenced_user.id.to_s%>
+                    <%= f.hidden_field :comment_date, value: @desired_date%>
                     <div class="form-group">
                       <%= f.label 'New comment' %>
                       <%= f.text_area :body, class: 'form-control' %>

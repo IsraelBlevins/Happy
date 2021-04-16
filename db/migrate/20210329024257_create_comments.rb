@@ -6,6 +6,7 @@ class CreateComments < ActiveRecord::Migration[6.0]
       t.string    "commenter"
       t.string    "body"
       t.datetime  "comment_date"
+      t.datetime  "comment_time"
       t.integer   "recipient_ID"
       t.timestamps
     end

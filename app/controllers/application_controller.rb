@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     def logged_in?
         !current_user.nil?
     end
-    
+
     def week_range(date: DateTime.now, start_day: :sunday)
         start_date = date.beginning_of_week(start_day)
         end_date = date.end_of_week(start_day)
