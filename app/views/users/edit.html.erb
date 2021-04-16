@@ -86,7 +86,13 @@
       </tr> 
       <tr>
         <th><%= form.label :superUser, "Admin Role?" %></th>
-        <th><%= form.select :superUser, options_for_select([[@user.superUser, ""], "true", "false"]), {} %></th>
+        <% if @user.superUser == true %>
+          <th><%= form.radio_button :superUser, true, :checked => true %> True</th>
+          <th><%= form.radio_button :superUser, false %> False</th>
+        <%else%>
+              <th><%= form.radio_button :superUser, true  %> True</th>
+              <th><%= form.radio_button :superUser, false, :checked => true %> False</th>
+        <%end%>
       </tr>
     <%end%>
   </table>
