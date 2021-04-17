@@ -9,14 +9,15 @@ Rails.application.routes.draw do
   post '/create' => 'home#create'
   post '/createQuestion' => 'home#createQuestion'
   post '/createMoodRating' => 'home#createMoodRating'
-  
+
   post 'createHW' => 'homework#createHW'
 
 
   patch '/updateMoodRating' => 'home#updateMoodRating'
   patch '/update' => 'home#update'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html  
   resources :users
+  resources :homework, only: [:destroy]
 
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'

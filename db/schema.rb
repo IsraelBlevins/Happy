@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2021_04_12_223334) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "password_digest"
-    t.string "image"
+    t.string "image", default: "https://i.imgur.com/JVYZerS.jpg"
   end
 
   create_table "videos", force: :cascade do |t|

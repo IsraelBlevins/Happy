@@ -1,4 +1,6 @@
 class HomeworkController < ApplicationController
+  before_action :set_displayed_question, only: %i[destroy]
+
   def index
     @videos = Video.all()
     @displayed_questions = DisplayedQuestion.all()
@@ -23,9 +25,18 @@ class HomeworkController < ApplicationController
     end
   end
 
-  def displayed_question_params
-    params.permit(:question, :question_type)
+  # DELETE /displayed_question/1 or /displayed_question/1.json
+  def destroy
+    @displayed_question.destroy
+    redirect_to homework_index_path(uid: current_user.id, desired_date: Date.today.to_s)
   end
 
 
+    def set_displayed_question
+      @displayed_question = DisplayedQuestion.find(params[:id])
+    end
+
+    def displayed_question_params
+      params.permit( :question, :question_type)
+    end
 end

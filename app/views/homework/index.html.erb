@@ -58,6 +58,9 @@
                 <% @displayed_questions.each do |displayed_question| %>
                   <%if displayed_question.question_type == "Homework"%>
                     <li class="list-group-item"><%=displayed_question.question%></li>
+                    <%if current_user.superUser%>
+                      <td><%= link_to 'Delete', { :controller => 'homework', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <%end%>
                   <%end%>
                 <%end%>
                 </ul>
