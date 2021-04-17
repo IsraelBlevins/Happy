@@ -9,5 +9,6 @@ class User < ApplicationRecord
   validates :email, presence: true, format: { with: EMAIL_FORMAT }, uniqueness: true
   #validates :password, presence: true, length:{ minimum:5 }
   #validates :password_confirmation, presence: true
-  has_many :comment
+
+  has_many :comment, dependent: :destroy #This destroys all the comments associated with the deleted user
 end

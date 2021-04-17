@@ -1,4 +1,6 @@
-class CommentsController < ApplicationController    
+class CommentsController < ApplicationController
+    before_action :set_comment, only: %i[ destroy ]
+
     def create
         @user = User.find(params[:user_id])
         @comment = @user.comment.new(comment_params)
@@ -12,7 +14,18 @@ class CommentsController < ApplicationController
         end
     end
 
+    def destroy
+        @redirectID = @comment.recipient_ID
+        @redirectDate = @comment.comment_date.to_date.to_s
+        @comment.destroy
+        redirect_to home_index_path(uid: @redirectID, desired_date:  @redirectDate)
+    end
+
     private
+
+    def set_comment
+       @comment = Comment.find(params[:id])
+    end
 
     def comment_params
         params.require(:comment).permit(:body, :commenter, :comment_date, :comment_time, :user_id, :recipient_ID)

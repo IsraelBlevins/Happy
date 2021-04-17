@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     @users = User.all()
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
-    @user_comments = Comment.all()
+    @all_comments = Comment.all()
 
     if @desired_date != Date.today.to_s
       @desired_date = params[:desired_date]
@@ -19,16 +19,15 @@ class HomeController < ApplicationController
     else
       @referenced_user = User.find(params[:uid])
     end
-    puts current_user.id
+    
     @cmts = []
 
-    @user_comments.each do |c|
-      @cmts.append(c)
+    @all_comments.each do |c|
+      if c.recipient_ID == @referenced_user.id && c.comment_date.to_date.to_s == @desired_date
+        @cmts.append(c)
+        puts c.id
+      end
     end
-            
-    if @cmts.any?
-      @cmts.sort{|a,b| a.comment_time <=> b.comment_time}
-    end 
   end
 
   def newQuestion

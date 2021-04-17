@@ -124,15 +124,18 @@
                 <% end %>
 
             <%#Comments%>
+
             <h3>Group Comments</h3>
 
-            <div style="height:300px;overflow:auto;">
-              <% @cmts.each do |c| %>
-                <%= render c, pageID: @referenced_user.id, date: @desired_date %>
-              <% end %>
+            <div style="height:300px;overflow:auto;"> 
+                <% (@cmts.reverse).each do |c| %>
+                    <% puts c.id %>
+                    <%= render c %> 
+                <% end %>
             </div>
+            
 
-            <% if current_user.id != @referenced_user.id #&& !current_user.superUser && @desired_date == Date.today.to_s %>
+            <% if current_user.id != @referenced_user.id %> 
               <div class="card my-1">
                 <div class="card-body">
                   <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
