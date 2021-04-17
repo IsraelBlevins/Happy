@@ -97,6 +97,9 @@
                                     <%= form.hidden_field :response_type, value: "Check Box" %>
                                     <%= form.hidden_field :response_date, value: Date.today %>
                                     <%= form.submit "Add", class: "btn btn-warning" %>
+                                    <%if current_user.superUser%>
+                                        <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                                    <%end%>
                                 </div>
                                 <% end %>
                             <% end %>
@@ -153,6 +156,9 @@
                                     <%= form.submit "Update", class: "btn btn-warning"%>
                                 <% end %>
                             </div>
+                            <%if current_user.superUser%>
+                                    <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <%end%>
                             <div style="margin-top:10px;">
                             </div>
                         <% end %>
@@ -173,6 +179,9 @@
                                     <%= form.submit "Save", class: "btn btn-warning" %>
                                 <% end %>
                             </div>
+                            <%if current_user.superUser%>
+                                <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <%end%>
                             <div style="margin-top:10px;"></div>
                         </div>
                     <% end %>

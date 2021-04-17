@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   before_action :set_response, only: %i[update]
   before_action :set_rating, only: %i[updateMoodRating]
+  before_action :set_displayed_question, only: %i[destroy]
   
   def index
     @displayed_questions = DisplayedQuestion.all()
@@ -38,6 +39,15 @@ class HomeController < ApplicationController
         format.json { render json: @displayed_question.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def destroy
+    @displayed_question.destroy
+    redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s)
+  end
+
+  def set_displayed_question
+    @displayed_question = DisplayedQuestion.find(params[:id])
   end
 
   def newMoodRating
