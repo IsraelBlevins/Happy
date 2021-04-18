@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   before_action :set_response, only: %i[update]
   before_action :set_rating, only: %i[updateMoodRating]
+  before_action :set_displayed_question, only: %i[destroy]
   
   def index
     @displayed_questions = DisplayedQuestion.all()
@@ -10,6 +11,14 @@ class HomeController < ApplicationController
     @mood_ratings = MoodRating.all()
     @all_comments = Comment.all()
 
+    @slider_pictures = SliderPicture.all()
+
+    if @slider_pictures.first.nil?
+      @most_recent_slider = ''
+    else
+      @most_recent_slider = SliderPicture.find(@slider_pictures.maximum(:id)).image_link 
+    end
+    
     if @desired_date != Date.today.to_s
       @desired_date = params[:desired_date]
     end
@@ -45,6 +54,29 @@ class HomeController < ApplicationController
       else
         format.html { render :new }
         format.json { render json: @displayed_question.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    @displayed_question.destroy
+    redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s)
+  end
+
+  def set_displayed_question
+    @displayed_question = DisplayedQuestion.find(params[:id])
+  end
+
+  def createSliderPicture
+    @slider_picture = SliderPicture.new(slider_picture_params)
+
+    respond_to do |format|
+      if @slider_picture.save
+        format.html { redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'New Picture was successfully saved.' }
+        format.json { render :show, status: :created, location: @slider_picture }
+      else
+        format.html { render :new }
+        format.json { render json: @slider_picture.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -123,5 +155,8 @@ class HomeController < ApplicationController
     params.permit(:id, :user_id, :question_asked, :response_type, :response_date, :response, :checked_off)
   end
 
+  def slider_picture_params
+    params.permit(:id, :image_link)
+  end
 
 end

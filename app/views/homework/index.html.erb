@@ -58,26 +58,75 @@
                 <% @displayed_questions.each do |displayed_question| %>
                   <%if displayed_question.question_type == "Homework"%>
                     <li class="list-group-item"><%=displayed_question.question%></li>
+                    <%if current_user.superUser%>
+                      <td><%= link_to 'Delete', { :controller => 'homework', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <%end%>
                   <%end%>
                 <%end%>
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Video Title</h1>
-            </div>
+
+        <%if current_user.superUser%>
+        <div class="col-md-6">
+                <h4>New Homework Form</h4>
+                <%= bootstrap_form_with url: "/createHW" do |form| %> 
+                    <div class="col">
+                        <div class="mb-3">
+                            <%= form.text_area :question, label: "Enter new Homework here", size: "10x10" %>
+                            <%= form.hidden_field :question_type, value: "Homework" %>
+                        </div>
+                        <div>
+                            <%= form.submit "Save", class: "btn btn-warning" %>
+                        </div>
+                        <div style="margin-top:10px;">
+                        </div>
+                    </div>
+                <% end %>
         </div>
+        <%end%>
+
     </div>
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lY1M-zWreEg" allowfullscreen></iframe>
+        <% @videos.each do |video| %>
+          <%if video.id == @videos.maximum(:id)%>
+            <div class="row">
+              <div class="col-md-12">
+                  <h1><%=video.uploader_comment %></h1>
+              </div>
+            </div>
+            <%if video.video_link["https://www.youtube.com/watch?v="]%>
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="embed-responsive embed-responsive-16by9">
+                    <% @source_link = "https://www.youtube.com/embed/"+video.video_link[32..42] %>
+                    <%= @source_link%>
+                        <iframe class="embed-responsive-item" src=<%=@source_link%> allowfullscreen></iframe>
+                    </div>
+                  </div>
                 </div>
-            </div>
-        </div>
+              </div>
+            <%end%>
+          <%end%>
+        <%end%>
     </div>
+      
+
+    <%if current_user.superUser%>
+                <h4>Change Video Form</h4>
+                <%= bootstrap_form_with url: "/createVideo" do |form| %> 
+                    <div class="col">
+                        <div class="mb-3">
+                            <%= form.text_area :video_link, label: "Enter Video link here:", size: "10x10" %>
+                            <%= form.text_area :uploader_comment, label: "Enter comment here:", size: "10x10" %>
+                        </div>
+                        <div>
+                            <%= form.submit "Save", class: "btn btn-warning" %>
+                        </div>
+                        <div style="margin-top:10px;">
+                        </div>
+                    </div>
+                <% end %>
+    <%end%>
 </body>

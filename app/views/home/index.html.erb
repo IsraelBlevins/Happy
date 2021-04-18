@@ -66,14 +66,14 @@
         <div class="col-md-12">
             <%if current_user.id == @referenced_user.id && Date.today.to_s == @desired_date %>
                 <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
-                <h4>Today is <%= @desired_date %>. </h4>
+                <h4>Today is <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>. </h4>
             <% elsif current_user.id == @referenced_user.id && Date.today.to_s != @desired_date %>
                 <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
-                <h4>You are viewing <%= @desired_date %>. </h4>
+                <h4>You are viewing <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>. </h4>
             <% elsif current_user.id != @referenced_user.id && Date.today.to_s == @desired_date %>
-                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins for Today, <%= @desired_date %>.</h2>
+                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins for Today, <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>.</h2>
             <% else %>
-                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins on <%= @desired_date %>.</h2>
+                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins on <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>.</h2>
             <% end %>
         </div>
         <div style="margin-top:10px;">
@@ -97,6 +97,9 @@
                                     <%= form.hidden_field :response_type, value: "Check Box" %>
                                     <%= form.hidden_field :response_date, value: Date.today %>
                                     <%= form.submit "Add", class: "btn btn-warning" %>
+                                    <%if current_user.superUser%>
+                                        <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                                    <%end%>
                                 </div>
                                 <% end %>
                             <% end %>
@@ -174,6 +177,9 @@
                                     <%= form.submit "Update", class: "btn btn-warning"%>
                                 <% end %>
                             </div>
+                            <%if current_user.superUser%>
+                                    <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <%end%>
                             <div style="margin-top:10px;">
                             </div>
                         <% end %>
@@ -194,6 +200,9 @@
                                     <%= form.submit "Save", class: "btn btn-warning" %>
                                 <% end %>
                             </div>
+                            <%if current_user.superUser%>
+                                <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                            <%end%>
                             <div style="margin-top:10px;"></div>
                         </div>
                     <% end %>
@@ -207,7 +216,7 @@
                     <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                             <div>
-                                <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                                <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
                             </div>
                             <div style="margin-top:10px;"></div>
                             <%= form.hidden_field :user_id, value: current_user.id %>
@@ -232,7 +241,7 @@
                     <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                             <div>
-                                <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                                <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
                             </div>
                             <div style="margin-top:10px;"></div>
                             <%= form.hidden_field :user_id, value: current_user.id %>
@@ -266,7 +275,7 @@
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :question, label: "Enter your Question here", size: "10x10" %>
-                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Homework", "Check Box"]), {}, {class: "form form-group form-control" } %>
+                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Check Box"]), {}, {class: "form form-group form-control" } %>
                         </div>
                         <div>
                             <%= form.submit "Save", class: "btn btn-warning" %>
@@ -276,6 +285,22 @@
                     </div>
                 <% end %>
         </div>
+        <%end%>
+
+        <%if current_user.superUser && @desired_date == Date.today.to_s && current_user.id == @referenced_user.id%>
+                <h4>Change Picture Form</h4>
+                <%= bootstrap_form_with url: "/createSliderPicture" do |form| %> 
+                    <div class="col">
+                        <div class="mb-3">
+                            <%= form.text_area :image_link, label: "Enter Image link here:", size: "10x10" %>   
+                        </div>
+                        <div>
+                            <%= form.submit "Save", class: "btn btn-warning" %>
+                        </div>
+                        <div style="margin-top:10px;">
+                        </div>
+                    </div>
+                <% end %>
         <%end%>
     </div>
 </body>

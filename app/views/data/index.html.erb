@@ -44,6 +44,29 @@
 </nav>
 
 <body>
+<br>
+<h2 class="text-center">My Data Tracking</h2>
+<br>
+
+<div class="row justify-content-center">
+  <div class="col-11">
+    <%=line_chart [
+        { name: "Morning", data: @mood_ratings_morning_pastweek.group_by_day(:created_at).maximum(:rating)},
+        { name: "Evening", data: @mood_ratings_evening_pastweek.group_by_day(:created_at).maximum(:rating)}
+      ], xtitle: "Time", ytitle: "Rating (0-10)", title: "Mood Tracking in the Past Week" %>
+  </div>
+</div>
+
+<br><br>
+
+<div class="row justify-content-center">
+  <div class="col-11">
+    <%=line_chart [
+        { name: "Morning", data: @mood_ratings_morning_pastmonth.group_by_day(:created_at).maximum(:rating)},
+        { name: "Evening", data: @mood_ratings_evening_pastmonth.group_by_day(:created_at).maximum(:rating)}
+      ], xtitle: "Time", ytitle: "Rating (0-10)", title: "Mood Tracking in the Past Month" %>
+  </div>
+</div>
 
 
 </body>
