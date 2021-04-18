@@ -25,6 +25,21 @@ class HomeworkController < ApplicationController
     end
   end
 
+
+  def createVideo
+    @video = Video.new(video_params)
+
+    respond_to do |format|
+      if @video.save
+        format.html { redirect_to homework_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'New Video was successfully saved.' }
+        format.json { render :show, status: :created, location: @video }
+      else
+        format.html { render :new }
+        format.json { render json: @video.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # DELETE /displayed_question/1 or /displayed_question/1.json
   def destroy
     @displayed_question.destroy
@@ -36,7 +51,15 @@ class HomeworkController < ApplicationController
       @displayed_question = DisplayedQuestion.find(params[:id])
     end
 
+    def set_video
+      @video = Video.find(params[:id])
+    end
+
     def displayed_question_params
       params.permit( :question, :question_type)
+    end
+
+    def video_params
+      params.permit( :video_link, :uploader_comment)
     end
 end

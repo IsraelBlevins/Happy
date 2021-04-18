@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   post '/createMoodRating' => 'home#createMoodRating'
 
   post 'createHW' => 'homework#createHW'
-
+  post 'createVideo' => 'homework#createVideo'
 
   patch '/updateMoodRating' => 'home#updateMoodRating'
   patch '/update' => 'home#update'
