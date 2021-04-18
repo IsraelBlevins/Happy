@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post '/create' => 'home#create'
   post '/createQuestion' => 'home#createQuestion'
   post '/createMoodRating' => 'home#createMoodRating'
+  post '/createSliderPicture' => 'home#createSliderPicture'
 
   post 'createHW' => 'homework#createHW'
   post 'createVideo' => 'homework#createVideo'

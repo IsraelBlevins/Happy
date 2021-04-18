@@ -9,6 +9,7 @@ class HomeController < ApplicationController
     @user_responses = UserResponse.all()
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
+    @
 
     
     if @desired_date != Date.today.to_s
@@ -48,6 +49,20 @@ class HomeController < ApplicationController
 
   def set_displayed_question
     @displayed_question = DisplayedQuestion.find(params[:id])
+  end
+
+  def createSliderPicture
+    @slider_picture = SliderPicture.new(slider_picture_params)
+
+    respond_to do |format|
+      if @slider_picture.save
+        format.html { redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'New Picture was successfully saved.' }
+        format.json { render :show, status: :created, location: @slider_picture }
+      else
+        format.html { render :new }
+        format.json { render json: @slider_picture.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def newMoodRating
@@ -124,5 +139,8 @@ class HomeController < ApplicationController
     params.permit(:id, :user_id, :question_asked, :response_type, :response_date, :response, :checked_off)
   end
 
+  def slider_picture_params
+    params.permit(:id, :image_link)
+  end
 
 end
