@@ -5,6 +5,10 @@ class UsersController < ApplicationController
   # GET /users or /users.json
   def index
     @users = User.order(params[:group_id])
+
+    if(!logged_in?)
+      redirect_to new_user_path
+    end
   end
 
   # GET /users/1 or /users/1.json
