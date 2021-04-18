@@ -66,14 +66,14 @@
         <div class="col-md-12">
             <%if current_user.id == @referenced_user.id && Date.today.to_s == @desired_date %>
                 <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
-                <h4>Today is <%= @desired_date %>. </h4>
+                <h4>Today is <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>. </h4>
             <% elsif current_user.id == @referenced_user.id && Date.today.to_s != @desired_date %>
                 <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
-                <h4>You are viewing <%= @desired_date %>. </h4>
+                <h4>You are viewing <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>. </h4>
             <% elsif current_user.id != @referenced_user.id && Date.today.to_s == @desired_date %>
-                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins for Today, <%= @desired_date %>.</h2>
+                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins for Today, <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>.</h2>
             <% else %>
-                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins on <%= @desired_date %>.</h2>
+                <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins on <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>.</h2>
             <% end %>
         </div>
         <div style="margin-top:10px;">
