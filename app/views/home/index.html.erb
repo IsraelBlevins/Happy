@@ -195,7 +195,7 @@
                     <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                             <div>
-                                <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                                <img src= "<%=@most_recent_picture.image_link%>", class = "img-fluid", alt = "mood rating scale">
                             </div>
                             <div style="margin-top:10px;"></div>
                             <%= form.hidden_field :user_id, value: current_user.id %>
@@ -220,7 +220,7 @@
                     <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                             <div>
-                                <%= image_tag("moodscale.jpg", :class => "img-fluid", :alt => "rss feed") %> 
+                                <img src= "<%=@most_recent_picture.image_link%>", class = "img-fluid", alt = "mood rating scale"> 
                             </div>
                             <div style="margin-top:10px;"></div>
                             <%= form.hidden_field :user_id, value: current_user.id %>

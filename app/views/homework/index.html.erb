@@ -74,7 +74,7 @@
                     <div class="col">
                         <div class="mb-3">
                             <%= form.text_area :question, label: "Enter new Homework here", size: "10x10" %>
-                            <%= form.select :question_type, options_for_select([["Select Type:"], "Homework"]), {}, {class: "form form-group form-control" } %>
+                            <%= form.hidden_field :question_type, value: "Homework" %>
                         </div>
                         <div>
                             <%= form.submit "Save", class: "btn btn-warning" %>

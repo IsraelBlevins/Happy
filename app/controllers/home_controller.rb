@@ -9,8 +9,8 @@ class HomeController < ApplicationController
     @user_responses = UserResponse.all()
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
-    @
-
+    @slider_pictures = SliderPicture.all()
+    @most_recent_picture = SliderPicture.find(@slider_pictures.maximum(:id))
     
     if @desired_date != Date.today.to_s
       @desired_date = params[:desired_date]
