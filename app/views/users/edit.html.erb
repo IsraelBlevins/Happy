@@ -79,7 +79,7 @@
       </tr> 
     <%end%>
 
-    <%if current_user.superUser %>
+    <%if current_user.superUser && current_user != @user%>
       <tr>
         <th><%= form.label :group_id, "Group:" %> </th>
         <td><%= form.number_field :group_id %></td>
