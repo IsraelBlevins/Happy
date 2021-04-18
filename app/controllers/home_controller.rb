@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_action :set_response, only: %i[update]
+  before_action :set_response, only: %i[update destroyCheckBox]
   before_action :set_rating, only: %i[updateMoodRating]
   before_action :set_displayed_question, only: %i[destroy]
   
@@ -34,7 +34,6 @@ class HomeController < ApplicationController
     @all_comments.each do |c|
       if c.recipient_ID == @referenced_user.id && c.comment_date.to_date.to_s == @desired_date
         @cmts.append(c)
-        puts c.id
       end
     end
   end
@@ -142,11 +141,17 @@ class HomeController < ApplicationController
     end
   end
 
+  def destroyCheckBox
+    @user_response.destroy 
+    redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s)
+  end
+
   private
 
   def set_response
       @user_response = UserResponse.find(params[:id])
   end
+
   def set_rating
       @mood_rating = MoodRating.find(params[:id])
   end

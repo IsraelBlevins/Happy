@@ -24,7 +24,10 @@ Rails.application.routes.draw do
   resources :comments, only: [:destroy]
 
   resources :homework, only: [:destroy]
+  
   resources :home, only: [:destroy]
+  delete 'destroyCheckBox/:id' => 'home#destroyCheckBox'
+
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
