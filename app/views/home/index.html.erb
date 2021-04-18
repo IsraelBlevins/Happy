@@ -195,7 +195,7 @@
                     <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                             <div>
-                                <img src= "<%=@most_recent_picture.image_link%>", class = "img-fluid", alt = "mood rating scale">
+                                <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
                             </div>
                             <div style="margin-top:10px;"></div>
                             <%= form.hidden_field :user_id, value: current_user.id %>
@@ -217,10 +217,10 @@
 
                             <div style="margin-top:10px;"></div>
                         <% end %>
-                    <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
+                    <% elsif Time.now.hour >= 15 && Time.now.hour < 19 %>
                         <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                             <div>
-                                <img src= "<%=@most_recent_picture.image_link%>", class = "img-fluid", alt = "mood rating scale"> 
+                                <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
                             </div>
                             <div style="margin-top:10px;"></div>
                             <%= form.hidden_field :user_id, value: current_user.id %>

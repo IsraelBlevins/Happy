@@ -10,7 +10,12 @@ class HomeController < ApplicationController
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
     @slider_pictures = SliderPicture.all()
-    @most_recent_picture = SliderPicture.find(@slider_pictures.maximum(:id))
+
+    if @slider_pictures.first.nil?
+      @most_recent_slider = ''
+    else
+      @most_recent_slider = SliderPicture.find(@slider_pictures.maximum(:id)).image_link 
+    end
     
     if @desired_date != Date.today.to_s
       @desired_date = params[:desired_date]
