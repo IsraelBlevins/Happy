@@ -63,7 +63,7 @@
     <p id="notice" style="color:red; text-align: center"><%= notice %></p>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <%if current_user.id == @referenced_user.id && Date.today.to_s == @desired_date %>
                 <h2>Welcome to your Daily Check-Ins, <%= @referenced_user.display_name %>!</h2>
                 <h4>Today is <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>. </h4>
@@ -75,177 +75,187 @@
             <% else %>
                 <h2>You are viewing <%= @referenced_user.display_name %>'s Check-Ins on <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>.</h2>
             <% end %>
+            <br>
         </div>
-        <div style="margin-top:10px;">
-        </div>
+        
     </div>
+
     <%#Checkboxes%>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <% @displayed_questions.each do | displayed_question | %>
-                    <% if displayed_question.question_type == "Check Box"%>
-                        <div class ="form-inline">
-                            <p><%= displayed_question.question %></p>
-                            <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
-                                <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
-                                <div class="input-group">
-                                    <%= form.text_field :response, label: "<span></span>".html_safe, size: "50x10" %>
-                                    <%= form.hidden_field :checked_off, value: false %>
-                                    <%= form.hidden_field :user_id, value: current_user.id %>
-                                    <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                                    <%= form.hidden_field :response_type, value: "Check Box" %>
-                                    <%= form.hidden_field :response_date, value: Date.today %>
-                                    <%= form.submit "Add", class: "btn btn-warning" %>
-                                    <%if current_user.superUser%>
-                                        <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                                    <%end%>
-                                </div>
-                                <% end %>
-                            <% end %>
-                        </div>
-                        <div style="margin-top:10px;"></div>
-                    <% end %>
-                    <% @user_responses.each do |user_response| %>
-                        <%if displayed_question.question_type == "Check Box" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date.to_s == @desired_date %>
-                            <div class ="form-inline">
-                                <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
-                                    <div class="input-group">
-                                        <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: user_response.checked_off, onclick: "this.form.submit()", disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
-                                        <%= form.label user_response.response %>
-                                        <%= form.hidden_field :user_id, value: current_user.id %>
-                                        <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                                        <%= form.hidden_field :response_type, value: "Check Box" %>
-                                        <%= form.hidden_field :response_date, value: Date.today %>
-                                        <%= form.hidden_field :id, value: user_response.id%>
-                                        <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
-                                            <%= link_to "Delete Checklist Item", { :controller => 'home', :action => 'destroyCheckBox', :id => user_response.id }, method: :delete %>
-                                        <% end %>
-                                    </div>
-                                    <div style="margin-top:10px;"></div>
-                                <% end %>
-                            </div>     
-                        <% end %>
-                    <% end %>
-                <% end %>
-
-
-            <%#Free Form Questions%>
-            <div class="col-md-6">
-            <% @displayed_questions.each do |displayed_question| %>
-                <% @notDisplayed = true %>
-                <% @user_responses.each do |user_response| %>
-                    <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date.to_s == @desired_date %>
-                        <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response, disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
-                                    <%= form.hidden_field :user_id, value: current_user.id %>
-                                    <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                                    <%= form.hidden_field :response_type, value: "Free Form" %>
-                                    <%= form.hidden_field :response_date, value: Date.today %>
-                                    <%= form.hidden_field :id, value: user_response.id%>
-                                    <% @notDisplayed = false %>
-                                </div>
-                            </div>
-                            <div>
-                                <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
-                                    <%= form.submit "Update", class: "btn btn-warning"%>
-                                <% end %>
-                            </div>
-                            <%if current_user.superUser && current_user.id == @referenced_user.id %>
-                                    <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <h3>Check-Ins</h3>
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <% @displayed_questions.each do | displayed_question | %>
+            <% if displayed_question.question_type == "Check Box"%>
+                <div class ="mx-3">
+                    <p class="mb-1"><%= displayed_question.question %></p>
+                    <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
+                        <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
+                        <div class="">
+                            <%if current_user.superUser%>
+                                <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete item?' }, class: "btn btn-danger btn-sm" %></td>
                             <%end%>
-                            <div style="margin-top:10px;">
-                            </div>
+                            <%= form.text_field :response, label: "<span></span>".html_safe, size: "20x10" %>
+                            <%= form.hidden_field :checked_off, value: false %>
+                            <%= form.hidden_field :user_id, value: current_user.id %>
+                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                            <%= form.hidden_field :response_type, value: "Check Box" %>
+                            <%= form.hidden_field :response_date, value: Date.today %>
+                            <%= form.submit "Add Item", class: "btn btn-warning" %>
+                        </div>
                         <% end %>
                     <% end %>
-                <% end %>
-                <%if @notDisplayed && displayed_question.question_type == "Free Form" %>  
-                    <%= bootstrap_form_with url: "/create" do |form| %> 
-                        <div class="col">
-                            <div class="mb-3">
-                                <%= form.text_area :response, label: displayed_question.question, size: "100x10", disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
+                </div>
+                <br>
+            <% end %>
+            <% @user_responses.each do |user_response| %>
+                <%if displayed_question.question_type == "Check Box" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date.to_s == @desired_date %>
+                    <div class ="form-inline">
+                        <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
+                            <div class="input-group ml-3">
+                                <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: user_response.checked_off, onclick: "this.form.submit()", disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
+                                <%= form.label user_response.response %>
                                 <%= form.hidden_field :user_id, value: current_user.id %>
                                 <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                                <%= form.hidden_field :response_type, value: "Free Form" %>
+                                <%= form.hidden_field :response_type, value: "Check Box" %>
                                 <%= form.hidden_field :response_date, value: Date.today %>
-                            </div>
-                            <div>
+                                <%= form.hidden_field :id, value: user_response.id%>
                                 <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
-                                    <%= form.submit "Save", class: "btn btn-warning" %>
+                                    <%= link_to "Delete Item", { :controller => 'home', :action => 'destroyCheckBox', :id => user_response.id }, method: :delete, class: "mx-2 btn btn-sm btn-outline-danger" %>
                                 <% end %>
                             </div>
-                            <%if current_user.superUser && current_user.id == @referenced_user.id%>
-                                <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                            <%end%>
                             <div style="margin-top:10px;"></div>
-                        </div>
-                    <% end %>
+                        <% end %>
+                    </div>     
                 <% end %>
             <% end %>
-            </div>
+        <% end %>
+    </div>
+    
 
-            <%#Mood Rating Slider%>
-            <div class="col-md-6">
-                <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
-                    <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
-                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                            <div>
-                                <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
-                            </div>
-                            <div style="margin-top:10px;"></div>
+    <%#Free Form Questions%>
+    <div class="col-lg-6 col-md-12">
+    <% @displayed_questions.each do |displayed_question| %>
+        <% @notDisplayed = true %>
+        <% @user_responses.each do |user_response| %>
+            <%if displayed_question.question_type == "Free Form" && displayed_question.question == user_response.question_asked && user_response.user_id == @referenced_user.id && user_response.response_date.to_date.to_s == @desired_date %>
+                <p class="mb-1 ml-3"><%= displayed_question.question %></p>
+                <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
+                    <div class="col">
+                        <div class="mb-3">
+                            <%if current_user.superUser && current_user.id == @referenced_user.id %>
+                                <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                            <%end%>
+                            <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x10", value: user_response.response, disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
                             <%= form.hidden_field :user_id, value: current_user.id %>
-                            <%= form.hidden_field :morning, value: true %>
-
-                            <%# Hide the slider and Save button if they already have responded to it and display their answer %>
-                                <% @alreadyResponded = false %>
-                                <% @mood_ratings.each do |mood_rating| %>
-                                    <% if mood_rating.user_id == current_user.id && mood_rating.morning && mood_rating.created_at.to_date == Date.today%>
-                                        <p>You submitted that you were feeling at a <%= mood_rating.rating %> this morning.</p>
-                                        <% @alreadyResponded = true%>
-                                    <% end %>
-                                <% end %>
-                                <% if !@alreadyResponded %>
-                                    <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
-                                    <p id="sliderDisplay"></p>
-                                    <%= form.submit "Save", class: "btn btn-warning" %>
-                                <% end %>
-
-                            <div style="margin-top:10px;"></div>
+                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                            <%= form.hidden_field :response_type, value: "Free Form" %>
+                            <%= form.hidden_field :response_date, value: Date.today %>
+                            <%= form.hidden_field :id, value: user_response.id%>
+                            <% @notDisplayed = false %>
+                        </div>
+                    <div>
+                        <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
+                            <%= form.submit "Update Response", class: "btn btn-warning"%>
                         <% end %>
-                    <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
-                        <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
-                            <div>
-                                <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
-                            </div>
-                            <div style="margin-top:10px;"></div>
-                            <%= form.hidden_field :user_id, value: current_user.id %>
-                            <%= form.hidden_field :morning, value: false %>
-
-                            <%# Hide the slider and Save button if they already have responded to it and display their answer %>
-                                <% @alreadyResponded = false %>
-                                <% @mood_ratings.each do |mood_rating| %>
-                                    <% if mood_rating.user_id == current_user.id && !mood_rating.morning && mood_rating.created_at.to_date == Date.today%>
-                                        <p>You submitted that you were feeling at a <%= mood_rating.rating %> this evening.</p>
-                                        <% @alreadyResponded = true%>
-                                    <% end %>
-                                <% end %>
-                                <% if !@alreadyResponded %>
-                                    <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
-                                    <p id="sliderDisplay"></p>
-                                    <%= form.submit "Save", class: "btn btn-warning" %>
-                                <% end %>
-                            
-                            <div style="margin-top:10px;"></div>
-                        <% end %>
-                    <% end %>
+                    </div>
+                    <br>
+                    </div>
                 <% end %>
-            </div>
+            <% end %>
+        <% end %>
+        <%if @notDisplayed && displayed_question.question_type == "Free Form" %> 
+            <p class="mb-1 ml-3"><%= displayed_question.question %></p> 
+            <%= bootstrap_form_with url: "/create" do |form| %> 
+                <div class="col">
+                    <div class="mb-3">
+                        <%if current_user.superUser && current_user.id == @referenced_user.id%>
+                            <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                        <%end%>
+                        <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x10", disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
+                        <%= form.hidden_field :user_id, value: current_user.id %>
+                        <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                        <%= form.hidden_field :response_type, value: "Free Form" %>
+                        <%= form.hidden_field :response_date, value: Date.today %>
+                    </div>
+                    <div>
+                        <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
+                            <%= form.submit "Save Reponse", class: "btn btn-warning" %>
+                        <% end %>
+                    </div>
+                    <br>
+                </div>
+            <% end %>
+        <% end %>
+    <% end %>
+    </div>
+</div>
 
-                        <%#Comments%>
+<br>
+    <%#Mood Rating Slider%>
+<div class="row">
+    <div class="col-lg-12 mx-3 d-flex justify-content-center text-center">
+        <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
+            <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
+                <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                    <div>
+                        <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
+                    </div>
+                    <div style="margin-top:10px;"></div>
+                    <%= form.hidden_field :user_id, value: current_user.id %>
+                    <%= form.hidden_field :morning, value: true %>
 
-            <h3>Group Comments</h3>
+                    <%# Hide the slider and Save button if they already have responded to it and display their answer %>
+                        <% @alreadyResponded = false %>
+                        <% @mood_ratings.each do |mood_rating| %>
+                            <% if mood_rating.user_id == current_user.id && mood_rating.morning && mood_rating.created_at.to_date == Date.today%>
+                                <p>You submitted that you were feeling at a <%= mood_rating.rating %> this morning.</p>
+                                <% @alreadyResponded = true%>
+                            <% end %>
+                        <% end %>
+                        <% if !@alreadyResponded %>
+                            <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                            <p id="sliderDisplay"></p>
+                            <%= form.submit "Save Rating", class: "btn btn-warning" %>
+                        <% end %>
+
+                    <br>
+                <% end %>
+            <% elsif Time.now.hour >= 18 && Time.now.hour < 19 %>
+                <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
+                    <div>
+                        <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
+                    </div>
+                    <div style="margin-top:10px;"></div>
+                    <%= form.hidden_field :user_id, value: current_user.id %>
+                    <%= form.hidden_field :morning, value: false %>
+
+                    <%# Hide the slider and Save button if they already have responded to it and display their answer %>
+                        <% @alreadyResponded = false %>
+                        <% @mood_ratings.each do |mood_rating| %>
+                            <% if mood_rating.user_id == current_user.id && !mood_rating.morning && mood_rating.created_at.to_date == Date.today%>
+                                <p>You submitted that you were feeling at a <%= mood_rating.rating %> this evening.</p>
+                                <% @alreadyResponded = true%>
+                            <% end %>
+                        <% end %>
+                        <% if !@alreadyResponded %>
+                            <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                            <p id="sliderDisplay"></p>
+                            <%= form.submit "Save", class: "btn btn-warning" %>
+                        <% end %>
+                    
+                    <div style="margin-top:10px;"></div>
+                <% end %>
+            <% end %>
+        <% end %>
+    </div>
+</div>
+
+<br>
+
+    <%#Comments%>
+    <div class="row">
+        <div class="col-12">
+            <h3>Comments</h3>
 
             <div style="height:300px;overflow:auto;"> 
                 <% (@cmts.reverse).each do |c| %>
@@ -253,53 +263,41 @@
                     <%= render c %> 
                 <% end %>
             </div>
-            
+        </div>
+    </div>
+    
 
-            <% if current_user.id != @referenced_user.id %> 
-              <div class="card my-1">
-                <div class="card-body">
-                  <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
-                    <%= f.hidden_field :recipient_ID, value: @referenced_user.id.to_s%>
-                    <%= f.hidden_field :comment_date, value: @desired_date%>
-                    <div class="form-group">
-                      <%= f.label 'New comment' %>
-                      <%= f.text_area :body, class: 'form-control' %>
-                    </div>
-                    <%= f.submit 'Submit', class: 'btn btn-primary' %>
-                  <% end %>
-                </div>
-              </div>
+    <% if current_user.id != @referenced_user.id %> 
+        <div class="card mx-3">
+        <div class="card-body">
+            <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
+            <%= f.hidden_field :recipient_ID, value: @referenced_user.id.to_s%>
+            <%= f.hidden_field :comment_date, value: @desired_date%>
+            <div class="form-group">
+                <%= f.label 'New comment' %>
+                <%= f.text_area :body, class: 'form-control' %>
+            </div>
+            <%= f.submit 'Submit Comment', class: 'btn btn-primary' %>
             <% end %>
+        </div>
+        </div>
+    <% end %>
 
-        <%# Add A New Question%>
+
+<%# ADMIN THINGS %>
+<div class="row">
+    <%# Add A New Question%>
+    <div class="col-lg-6 col-md-12">
         <%if current_user.superUser && @desired_date == Date.today.to_s && current_user.id == @referenced_user.id %>
-        <div class="col-md-6">
-                <h4>New Question Form</h4>
+                <h3 class="ml-3">Create New Question</h4>
                 <%= bootstrap_form_with url: "/createQuestion" do |form| %> 
-                    <div class="col">
-                        <div class="mb-3">
-                            <%= form.text_area :question, label: "Enter your Question here", size: "10x10" %>
+                    <div class="mx-3">
+                        <div>
+                            <%= form.text_area :question, label: "Enter question here", size: "10x10" %>
                             <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Check Box"]), {}, {class: "form form-group form-control" } %>
                         </div>
                         <div>
-                            <%= form.submit "Save", class: "btn btn-warning" %>
-                        </div>
-                        <div style="margin-top:10px;">
-                        </div>
-                    </div>
-                <% end %>
-        </div>
-        <%end%>
-
-        <%if current_user.superUser && @desired_date == Date.today.to_s && current_user.id == @referenced_user.id%>
-                <h4>Change Picture Form</h4>
-                <%= bootstrap_form_with url: "/createSliderPicture" do |form| %> 
-                    <div class="col">
-                        <div class="mb-3">
-                            <%= form.text_area :image_link, label: "Enter Image link here:", size: "10x10" %>   
-                        </div>
-                        <div>
-                            <%= form.submit "Save", class: "btn btn-warning" %>
+                            <%= form.submit "Add Question", class: "btn btn-danger" %>
                         </div>
                         <div style="margin-top:10px;">
                         </div>
@@ -307,5 +305,25 @@
                 <% end %>
         <%end%>
     </div>
+
+    <div class="col-lg-6 col-md-12">
+        <%if current_user.superUser && @desired_date == Date.today.to_s && current_user.id == @referenced_user.id%>
+                <h3>Change Mood Rating Scale Image</h4>
+                <%= bootstrap_form_with url: "/createSliderPicture" do |form| %> 
+                    <div class="mx-3">
+                        <div>
+                            <%= form.text_area :image_link, label: "Enter Image link here:", size: "10x10" %>   
+                        </div>
+                        <div>
+                            <%= form.submit "Change Image", class: "btn btn-danger mr-3" %>
+                        </div>
+                        <div style="margin-top:10px;">
+                        </div>
+                    </div>
+                <% end %>
+        <%end%>
+    </div>
+</div>
+
 </body>
 </html>
