@@ -119,7 +119,7 @@
                                         <%= form.hidden_field :response_date, value: Date.today %>
                                         <%= form.hidden_field :id, value: user_response.id%>
                                         <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
-                                            <%= link_to "Delete Checklist Item", { :controller => 'home', :action => 'destroyCheckBox', :id => user_response.id }, method: :delete, data: { confirm: 'Delete this checklist item?' }  %>
+                                            <%= link_to "Delete Checklist Item", { :controller => 'home', :action => 'destroyCheckBox', :id => user_response.id }, method: :delete %>
                                         <% end %>
                                     </div>
                                     <div style="margin-top:10px;"></div>
