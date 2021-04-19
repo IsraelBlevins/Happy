@@ -1,14 +1,16 @@
 class HomeController < ApplicationController
-  before_action :set_response, only: %i[update]
+  before_action :set_response, only: %i[update destroyCheckBox]
   before_action :set_rating, only: %i[updateMoodRating]
   before_action :set_displayed_question, only: %i[destroy]
   
   def index
     @displayed_questions = DisplayedQuestion.all()
-    @comments = Comment.all()
     @user_responses = UserResponse.all()
+    @users = User.all()
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
+    @all_comments = Comment.all()
+
     @slider_pictures = SliderPicture.all()
 
     if @slider_pictures.first.nil?
@@ -25,6 +27,14 @@ class HomeController < ApplicationController
       @referenced_user = current_user
     else
       @referenced_user = User.find(params[:uid])
+    end
+    
+    @cmts = []
+
+    @all_comments.each do |c|
+      if c.recipient_ID == @referenced_user.id && c.comment_date.to_date.to_s == @desired_date
+        @cmts.append(c)
+      end
     end
   end
 
@@ -90,7 +100,7 @@ class HomeController < ApplicationController
   
 
   def mood_rating_params
-      params.permit(:user_id, :rating, :morning)
+    params.permit(:user_id, :rating, :morning)
   end
 
   def displayed_question_params
@@ -131,11 +141,17 @@ class HomeController < ApplicationController
     end
   end
 
+  def destroyCheckBox
+    @user_response.destroy 
+    redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s)
+  end
+
   private
 
   def set_response
       @user_response = UserResponse.find(params[:id])
   end
+
   def set_rating
       @mood_rating = MoodRating.find(params[:id])
   end

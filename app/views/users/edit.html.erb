@@ -79,21 +79,23 @@
       </tr> 
     <%end%>
 
-    <%if current_user.superUser %>
+    <%if current_user.superUser%>
       <tr>
         <th><%= form.label :group_id, "Group:" %> </th>
         <td><%= form.number_field :group_id %></td>
-      </tr> 
-      <tr>
-        <th><%= form.label :superUser, "Admin Role?" %></th>
-        <% if @user.superUser == true %>
-          <th><%= form.radio_button :superUser, true, :checked => true %> True</th>
-          <th><%= form.radio_button :superUser, false %> False</th>
-        <%else%>
-              <th><%= form.radio_button :superUser, true  %> True</th>
-              <th><%= form.radio_button :superUser, false, :checked => true %> False</th>
-        <%end%>
       </tr>
+      <%if current_user != @user%> 
+        <tr>
+          <th><%= form.label :superUser, "Admin Role?" %></th>
+          <% if @user.superUser == true %>
+            <th><%= form.radio_button :superUser, true, :checked => true %> True</th>
+            <th><%= form.radio_button :superUser, false %> False</th>
+          <%else%>
+                <th><%= form.radio_button :superUser, true  %> True</th>
+                <th><%= form.radio_button :superUser, false, :checked => true %> False</th>
+          <%end%>
+        </tr>
+      <%end%>
     <%end%>
   </table>
 

@@ -1,9 +1,14 @@
 class UsersController < ApplicationController
+  before_action :logged_in_user, only: [:edit, :update]
   before_action :set_user, only: %i[ show edit update destroy ]
 
   # GET /users or /users.json
   def index
     @users = User.order(params[:group_id])
+
+    if(!logged_in?)
+      redirect_to new_user_path
+    end
   end
 
   # GET /users/1 or /users/1.json
@@ -39,8 +44,13 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to home_index_path(uid: @user.id, desired_date: Date.today.to_s), notice: "User was successfully updated." }
-        format.json { render :show, status: :ok, location: @user }
+        if current_user.superUser
+          format.html { redirect_to users_url, notice: "User was successfully updated." }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { redirect_to home_index_path(uid: @user.id, desired_date: Date.today.to_s), notice: "User was successfully updated." }
+          format.json { render :show, status: :ok, location: @user }
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -52,7 +62,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to sessions_new_url, notice: "User was successfully destroyed." }
+      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -61,6 +71,14 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    # Confirms a logged-in user
+    def logged_in_user
+      unless logged_in?
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
     end
 
     # Only allow a list of trusted parameters through.

@@ -118,6 +118,9 @@
                                         <%= form.hidden_field :response_type, value: "Check Box" %>
                                         <%= form.hidden_field :response_date, value: Date.today %>
                                         <%= form.hidden_field :id, value: user_response.id%>
+                                        <%if current_user.id == @referenced_user.id && @desired_date == Date.today.to_s%>
+                                            <%= link_to "Delete Checklist Item", { :controller => 'home', :action => 'destroyCheckBox', :id => user_response.id }, method: :delete %>
+                                        <% end %>
                                     </div>
                                     <div style="margin-top:10px;"></div>
                                 <% end %>
@@ -126,12 +129,6 @@
                     <% end %>
                 <% end %>
 
-            <%#Comments%>
-            <h3>Group Comments</h3>
-            <% @comments.each do |comment| %>
-                <p><%= comment.comment %></p>
-            <% end %>
-            </div>
 
             <%#Free Form Questions%>
             <div class="col-md-6">
@@ -142,7 +139,7 @@
                         <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                             <div class="col">
                                 <div class="mb-3">
-                                    <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response %>
+                                    <%= form.text_area :response, label: displayed_question.question, size: "100x10", value: user_response.response, disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
                                     <%= form.hidden_field :user_id, value: current_user.id %>
                                     <%= form.hidden_field :question_asked, value: displayed_question.question %>
                                     <%= form.hidden_field :response_type, value: "Free Form" %>
@@ -156,7 +153,7 @@
                                     <%= form.submit "Update", class: "btn btn-warning"%>
                                 <% end %>
                             </div>
-                            <%if current_user.superUser%>
+                            <%if current_user.superUser && current_user.id == @referenced_user.id %>
                                     <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                             <%end%>
                             <div style="margin-top:10px;">
@@ -168,7 +165,7 @@
                     <%= bootstrap_form_with url: "/create" do |form| %> 
                         <div class="col">
                             <div class="mb-3">
-                                <%= form.text_area :response, label: displayed_question.question, size: "100x10" %>
+                                <%= form.text_area :response, label: displayed_question.question, size: "100x10", disabled: @referenced_user.id != current_user.id || @desired_date != Date.today.to_s %>
                                 <%= form.hidden_field :user_id, value: current_user.id %>
                                 <%= form.hidden_field :question_asked, value: displayed_question.question %>
                                 <%= form.hidden_field :response_type, value: "Free Form" %>
@@ -179,7 +176,7 @@
                                     <%= form.submit "Save", class: "btn btn-warning" %>
                                 <% end %>
                             </div>
-                            <%if current_user.superUser%>
+                            <%if current_user.superUser && current_user.id == @referenced_user.id%>
                                 <td><%= link_to 'Delete', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                             <%end%>
                             <div style="margin-top:10px;"></div>
@@ -245,6 +242,34 @@
                     <% end %>
                 <% end %>
             </div>
+
+                        <%#Comments%>
+
+            <h3>Group Comments</h3>
+
+            <div style="height:300px;overflow:auto;"> 
+                <% (@cmts.reverse).each do |c| %>
+                    <% puts c.id %>
+                    <%= render c %> 
+                <% end %>
+            </div>
+            
+
+            <% if current_user.id != @referenced_user.id %> 
+              <div class="card my-1">
+                <div class="card-body">
+                  <%= form_with(model: [current_user, current_user.comment.build]) do |f| %>
+                    <%= f.hidden_field :recipient_ID, value: @referenced_user.id.to_s%>
+                    <%= f.hidden_field :comment_date, value: @desired_date%>
+                    <div class="form-group">
+                      <%= f.label 'New comment' %>
+                      <%= f.text_area :body, class: 'form-control' %>
+                    </div>
+                    <%= f.submit 'Submit', class: 'btn btn-primary' %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
 
         <%# Add A New Question%>
         <%if current_user.superUser && @desired_date == Date.today.to_s && current_user.id == @referenced_user.id %>

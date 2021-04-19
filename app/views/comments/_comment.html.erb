@@ -1,0 +1,15 @@
+<% unless !comment.persisted? %>
+    <div class="card">
+        <div class="card-body">
+            <%= comment.body %>
+            <footer style="font-size:12px">
+                <%= "Posted by " %>
+                <span style="font-weight: bold;"> <%= comment.commenter %></span> 
+                <%= " on " + comment.comment_time.strftime("%b %d, %Y") + comment.comment_time.strftime(" \u2022 %-I:%M %p %Z") %>
+                <% if current_user.id == comment.user_id %>
+                    <span style="float:right;"><%= link_to "Delete Comment", comment, method: :delete, data: { confirm: 'Delete this comment?' }  %></span>
+                <% end %>
+            </footer>
+        </div>
+    </div>
+<% end %>
