@@ -49,6 +49,7 @@
     <tr>
       <th></th>
       <th>Username</th>
+      <th>UID</th>
       <th>Email</th>
       <th>Group</th>
       <th>Role</th>
@@ -61,8 +62,9 @@
       <tr>
         <td><img src="<%=member.image%>" alt="Profile Picture" class="avatar"></td>
         <td><%= link_to member.display_name, home_index_path(uid: member.id, desired_date: Date.today.to_s) %></td>
+        <td><%= member.id %></th>
         <td><%= member.email %></td>
-        <td><%= member.group_id %></td>
+        <th><%= member.group_id %></th>
         <td>
           <%if member.superUser %>
             Admin
