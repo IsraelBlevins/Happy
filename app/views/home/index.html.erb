@@ -64,7 +64,11 @@
 
     <div class="row">
         <div class="col-12">
-            <%if current_member.id == @referenced_member.id && Date.today.to_s == @desired_date %>
+            <% if current_member.superUser && current_member.id == @referenced_member.id %>
+                <h2>Admin Controls</h2>
+                <h4>Logged in as <%= @referenced_member.display_name %></h4>
+                <h4>Date is: <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %></h4>
+            <%elsif current_member.id == @referenced_member.id && Date.today.to_s == @desired_date %>
                 <h2>Welcome to your Daily Check-Ins, <%= @referenced_member.display_name %>!</h2>
                 <h4>Today is <%= DateTime.parse(@desired_date).strftime('%A %B %d, %Y') %>. </h4>
             <% elsif current_member.id == @referenced_member.id && Date.today.to_s != @desired_date %>
@@ -80,8 +84,20 @@
         
     </div>
 
-    <%#Checkboxes%>
+<%#Checkboxes%>
     <h3>Check-Ins</h3>
+
+<%# Display message for no entries on a specific day %>
+<% @responsePresent = false %>
+<% @member_responses.each do |member_response| %>
+    <% if member_response.response_date.to_date.to_s == @desired_date && member_response.member_id == @referenced_member.id %>
+        <% @responsePresent = true %>
+    <%end%>
+<%end%>
+<% if !@responsePresent && !current_member.superUser && @desired_date != Date.today.to_s%>
+    <p class="ml-3">User did not make any entries for this day.</p>
+<%end%>
+
 <div class="row">
     <div class="col-lg-6 col-md-12">
         <% @member_responses.each do |member_response| %>
@@ -108,14 +124,15 @@
                         <div class="">
                             <%if current_member.superUser%>
                                 <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete item?' }, class: "btn btn-danger btn-sm" %></td>
+                            <%else%>
+                                <%= form.text_field :response, label: "<span></span>".html_safe, size: "20x5" %>
+                                <%= form.hidden_field :checked_off, value: false %>
+                                <%= form.hidden_field :member_id, value: current_member.id %>
+                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                <%= form.hidden_field :response_type, value: "Check Box" %>
+                                <%= form.hidden_field :response_date, value: Date.today %>
+                                <%= form.submit "Add Item", class: "btn btn-warning" %>
                             <%end%>
-                            <%= form.text_field :response, label: "<span></span>".html_safe, size: "20x5" %>
-                            <%= form.hidden_field :checked_off, value: false %>
-                            <%= form.hidden_field :member_id, value: current_member.id %>
-                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                            <%= form.hidden_field :response_type, value: "Check Box" %>
-                            <%= form.hidden_field :response_date, value: Date.today %>
-                            <%= form.submit "Add Item", class: "btn btn-warning" %>
                         </div>
                         <% end %>
                     <% end %>
@@ -127,16 +144,18 @@
                     <div class ="form-inline">
                         <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                             <div class="input-group ml-3">
-                                <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: member_response.checked_off, onclick: "this.form.submit()", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
-                                <%= form.label member_response.response %>
-                                <%= form.hidden_field :member_id, value: current_member.id %>
-                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                                <%= form.hidden_field :response_type, value: "Check Box" %>
-                                <%= form.hidden_field :response_date, value: Date.today %>
-                                <%= form.hidden_field :id, value: member_response.id%>
-                                <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s%>
-                                    <%= link_to "Delete Item", { :controller => 'home', :action => 'destroyCheckBox', :id => member_response.id }, method: :delete, class: "mx-2 btn btn-sm btn-outline-danger" %>
-                                <% end %>
+                                <% if !current_member.superUser %>
+                                    <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: member_response.checked_off, onclick: "this.form.submit()", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
+                                    <%= form.label member_response.response %>
+                                    <%= form.hidden_field :member_id, value: current_member.id %>
+                                    <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                    <%= form.hidden_field :response_type, value: "Check Box" %>
+                                    <%= form.hidden_field :response_date, value: Date.today %>
+                                    <%= form.hidden_field :id, value: member_response.id%>
+                                    <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s%>
+                                        <%= link_to "Delete Item", { :controller => 'home', :action => 'destroyCheckBox', :id => member_response.id }, method: :delete, class: "mx-2 btn btn-sm btn-outline-danger" %>
+                                    <% end %>
+                                <%end%>
                             </div>
                             <div style="margin-top:10px;"></div>
                         <% end %>
@@ -170,17 +189,19 @@
                         <div class="mb-3">
                             <%if current_member.superUser && current_member.id == @referenced_member.id %>
                                 <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                                <% @notDisplayed = false %>
+                            <%else%>
+                                <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", value: member_response.response, disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
+                                <%= form.hidden_field :member_id, value: current_member.id %>
+                                <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                                <%= form.hidden_field :response_type, value: "Free Form" %>
+                                <%= form.hidden_field :response_date, value: Date.today %>
+                                <%= form.hidden_field :id, value: member_response.id%>
+                                <% @notDisplayed = false %>
                             <%end%>
-                            <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", value: member_response.response, disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
-                            <%= form.hidden_field :member_id, value: current_member.id %>
-                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                            <%= form.hidden_field :response_type, value: "Free Form" %>
-                            <%= form.hidden_field :response_date, value: Date.today %>
-                            <%= form.hidden_field :id, value: member_response.id%>
-                            <% @notDisplayed = false %>
                         </div>
                     <div>
-                        <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s%>
+                        <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s && !current_member.superUser%>
                             <%= form.submit "Update Response", class: "btn btn-warning"%>
                         <% end %>
                     </div>
@@ -196,15 +217,16 @@
                     <div class="mb-3">
                         <%if current_member.superUser && current_member.id == @referenced_member.id%>
                             <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                        <%else%>
+                            <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
+                            <%= form.hidden_field :member_id, value: current_member.id %>
+                            <%= form.hidden_field :question_asked, value: displayed_question.question %>
+                            <%= form.hidden_field :response_type, value: "Free Form" %>
+                            <%= form.hidden_field :response_date, value: Date.today %>
                         <%end%>
-                        <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
-                        <%= form.hidden_field :member_id, value: current_member.id %>
-                        <%= form.hidden_field :question_asked, value: displayed_question.question %>
-                        <%= form.hidden_field :response_type, value: "Free Form" %>
-                        <%= form.hidden_field :response_date, value: Date.today %>
                     </div>
                     <div>
-                        <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s%>
+                        <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s && !current_member.superUser%>
                             <%= form.submit "Save Reponse", class: "btn btn-warning" %>
                         <% end %>
                     </div>
@@ -246,7 +268,7 @@
 
                     <br>
                 <% end %>
-            <% elsif Time.now.hour >= 16 && Time.now.hour < 24 %>
+            <% elsif Time.now.hour >= 18 && Time.now.hour < 24 %>
                 <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                     <div>
                         <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
@@ -278,38 +300,6 @@
 
 <br>
 
-    <%#Comments%>
-    <div class="row">
-        <div class="col-12">
-            <h3>Comments</h3>
-
-            <div style="height:300px;overflow:auto;"> 
-                <% (@cmts.reverse).each do |c| %>
-                    <% puts c.id %>
-                    <%= render c %> 
-                <% end %>
-            </div>
-        </div>
-    </div>
-    
-
-    <% if current_member.id != @referenced_member.id %> 
-        <div class="card mx-3">
-        <div class="card-body">
-            <%= form_with(model: [current_member, current_member.comment.build]) do |f| %>
-            <%= f.hidden_field :recipient_ID, value: @referenced_member.id.to_s%>
-            <%= f.hidden_field :comment_date, value: @desired_date%>
-            <div class="form-group">
-                <%= f.label 'New comment' %>
-                <%= f.text_area :body, class: 'form-control' %>
-            </div>
-            <%= f.submit 'Submit Comment', class: 'btn btn-primary' %>
-            <% end %>
-        </div>
-        </div>
-    <% end %>
-
-
 <%# ADMIN THINGS %>
 <div class="row">
     <%# Add A New Question%>
@@ -331,7 +321,7 @@
                 <% end %>
         <%end%>
     </div>
-
+    <%# Change Mood Rating Scale Image %>
     <div class="col-lg-6 col-md-12">
         <%if current_member.superUser && @desired_date == Date.today.to_s && current_member.id == @referenced_member.id%>
                 <h3>Change Mood Rating Scale Image</h4>
@@ -347,7 +337,45 @@
                         </div>
                     </div>
                 <% end %>
+                <br>
+                <h6 class="text-center">Current Mood Rating Scale Image:</h6>
+                <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale">
         <%end%>
+    </div>
+</div>
+
+<%#Comments%>
+<div class="row">
+    <div class="col-12">
+        <% if current_member.id == @referenced_member.id && !current_member.superUser%>
+            <h3>Comments</h3> 
+        <%end%>
+        <% if current_member.id != @referenced_member.id && !current_member.superUser %>
+            <h3>Comments</h3> 
+            <div class="card mx-3">
+            <div class="card-body">
+                <%= form_with(model: [current_member, current_member.comment.build]) do |f| %>
+                <%= f.hidden_field :recipient_ID, value: @referenced_member.id.to_s%>
+                <%= f.hidden_field :comment_date, value: @desired_date%>
+                <div class="form-group">
+                    <%= f.label 'New comment' %>
+                    <%= f.text_area :body, class: 'form-control' %>
+                </div>
+                <%= f.submit 'Submit Comment', class: 'btn btn-primary' %>
+                <% end %>
+            </div>
+            </div>
+        <% end %>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-12">
+        <div style="height:300px;overflow:auto;"> 
+            <% (@cmts.reverse).each do |c| %>
+                <%= render c %> 
+            <% end %>
+        </div>
     </div>
 </div>
 
