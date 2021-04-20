@@ -1,17 +1,17 @@
 require "application_system_test_case"
 
-class UsersTest < ApplicationSystemTestCase
+class MembersTest < ApplicationSystemTestCase
   setup do
-    @user = users(:one)
+    @member = members(:one)
   end
 
   test "visiting the index" do
-    visit users_url
+    visit members_url
     assert_selector "h1", text: "Users"
   end
 
   test "creating a User" do
-    visit users_url
+    visit members_url
     click_on "New User"
 
     click_on "Create User"
@@ -21,7 +21,7 @@ class UsersTest < ApplicationSystemTestCase
   end
 
   test "updating a User" do
-    visit users_url
+    visit members_url
     click_on "Edit", match: :first
 
     click_on "Update User"
@@ -31,7 +31,7 @@ class UsersTest < ApplicationSystemTestCase
   end
 
   test "destroying a User" do
-    visit users_url
+    visit members_url
     page.accept_confirm do
       click_on "Destroy", match: :first
     end

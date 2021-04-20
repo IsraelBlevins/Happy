@@ -2,9 +2,9 @@ class CommentsController < ApplicationController
     before_action :set_comment, only: %i[ destroy ]
 
     def create
-        @user = User.find(params[:user_id])
-        @comment = @user.comment.new(comment_params)
-        @comment.commenter = @user.display_name
+        @member = Member.find(params[:member_id])
+        @comment = @member.comment.new(comment_params)
+        @comment.commenter = @member.display_name
         @comment.comment_time = Time.new.localtime
 
         respond_to do |format|
@@ -28,6 +28,6 @@ class CommentsController < ApplicationController
     end
 
     def comment_params
-        params.require(:comment).permit(:body, :commenter, :comment_date, :comment_time, :user_id, :recipient_ID)
+        params.require(:comment).permit(:body, :commenter, :comment_date, :comment_time, :member_id, :recipient_ID)
     end
 end

@@ -24,12 +24,12 @@
 <h2 class="text-center">Find Your Happy</h2>
 <h3 class="text-center">Sign Up</h3>
 
-<%= form_with(model: @user, local: true, :html => {:multipart => true}) do |form| %>
-  <% if @user.errors.any? %>
+<%= form_with(model: @member, local: true, :html => {:multipart => true}) do |form| %>
+  <% if @member.errors.any? %>
     <div id="error_explanation">
 
       <ul>
-        <% @user.errors.full_messages.each do |message| %>
+        <% @member.errors.full_messages.each do |message| %>
           <p style="color:red; text-align: center"><%= message %></p>
         <% end %>
       </ul>
@@ -70,5 +70,3 @@
 <div class="text-center">
       <p> <%= link_to 'Already have an account? Login.', login_path %></p>
 </div>
-
-<!-- <%= link_to 'Show All Users (For Testing)', users_path %> -->

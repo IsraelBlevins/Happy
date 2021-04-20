@@ -1,4 +1,4 @@
-class User < ApplicationRecord
+class Member < ApplicationRecord
   #attr_accessible :display_name, :email, :password, :password_confirmation, :image
   has_secure_password
 
@@ -10,5 +10,5 @@ class User < ApplicationRecord
   #validates :password, presence: true
   #validates :password_confirmation, presence: true
 
-  has_many :comment, dependent: :destroy #This destroys all the comments associated with the deleted user
+  has_many :comment, dependent: :destroy #This destroys all the comments associated with the deleted member
 end

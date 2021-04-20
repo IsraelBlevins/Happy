@@ -3,11 +3,10 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(email: params[:session][:email])
-    if user && user.authenticate(params[:session][:password])
-      #session[:user_id] = user.id
-      log_in user
-      redirect_to home_index_path(uid: user.id, desired_date: Date.today.to_s)
+    member = Member.find_by(email: params[:session][:email])
+    if member && member.authenticate(params[:session][:password])
+      log_in member
+      redirect_to home_index_path(uid: member.id, desired_date: Date.today.to_s)
     else
       flash.now[:danger] = 'Bad email/password combination. Try again.'
       render 'new'
@@ -15,8 +14,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session.delete(:user_id)
-    @current_user = nil
+    session.delete(:member_id)
+    @current_member = nil
     redirect_to sessions_new_url
   end
 end

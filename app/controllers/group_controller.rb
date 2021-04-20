@@ -3,8 +3,8 @@ class GroupController < ApplicationController
   helper_method :prior_weekday
 
   def index
-    @group_members = User.where(group_id: current_user.group_id)
-    @user_responses = UserResponse.all()
+    @group_members = Member.where(group_id: current_member.group_id)
+    @member_responses = MemberResponse.all()
   end
 
   def prior_weekday(date, weekday)

@@ -5,8 +5,8 @@ class HomeController < ApplicationController
   
   def index
     @displayed_questions = DisplayedQuestion.all()
-    @user_responses = UserResponse.all()
-    @users = User.all()
+    @member_responses = MemberResponse.all()
+    @members = Member.all()
     @displayed_questions = DisplayedQuestion.all()
     @mood_ratings = MoodRating.all()
     @all_comments = Comment.all()
@@ -23,16 +23,16 @@ class HomeController < ApplicationController
       @desired_date = params[:desired_date]
     end
 
-    if current_user.id == :uid
-      @referenced_user = current_user
+    if current_member.id == :uid
+      @referenced_member = current_member
     else
-      @referenced_user = User.find(params[:uid])
+      @referenced_member = Member.find(params[:uid])
     end
     
     @cmts = []
 
     @all_comments.each do |c|
-      if c.recipient_ID == @referenced_user.id && c.comment_date.to_date.to_s == @desired_date
+      if c.recipient_ID == @referenced_member.id && c.comment_date.to_date.to_s == @desired_date
         @cmts.append(c)
       end
     end
@@ -48,7 +48,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       if @displayed_question.save
-        format.html { redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'New Question was successfully saved.' }
+        format.html { redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: 'New Question was successfully saved.' }
         format.json { render :show, status: :created, location: @displayed_questions }
       else
         format.html { render :new }
@@ -59,7 +59,7 @@ class HomeController < ApplicationController
 
   def destroy
     @displayed_question.destroy
-    redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s)
+    redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s)
   end
 
   def set_displayed_question
@@ -71,7 +71,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       if @slider_picture.save
-        format.html { redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'New Picture was successfully saved.' }
+        format.html { redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: 'New Picture was successfully saved.' }
         format.json { render :show, status: :created, location: @slider_picture }
       else
         format.html { render :new }
@@ -89,7 +89,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       if @mood_rating.save
-        format.html { redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'Mood successfully saved.' }
+        format.html { redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: 'Mood successfully saved.' }
         format.json { render :show, status: :created, location: @mood_rating }
       else
         format.html { render :new }
@@ -100,7 +100,7 @@ class HomeController < ApplicationController
   
 
   def mood_rating_params
-    params.permit(:user_id, :rating, :morning)
+    params.permit(:member_id, :rating, :morning)
   end
 
   def displayed_question_params
@@ -109,55 +109,55 @@ class HomeController < ApplicationController
 
 
   def new
-    @user_response = UserResponse.new
+    @member_response = MemberResponse.new
   end
 
   def edit
   end
   #POST /home or /home.json
   def create
-    @user_response = UserResponse.new(user_response_params)
+    @member_response = MemberResponse.new(member_response_params)
 
     respond_to do |format|
-      if @user_response.save
-        format.html { redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'Response was successfully saved.' }
-        format.json { render :show, status: :created, location: @user_responses }
+      if @member_response.save
+        format.html { redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: 'Response was successfully saved.' }
+        format.json { render :show, status: :created, location: @member_responses }
       else
         format.html { render :new }
-        format.json { render json: @user_response.errors, status: :unprocessable_entity }
+        format.json { render json: @member_response.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
     respond_to do |format|
-      if @user_response.update_attributes(user_response_params)
-        format.html { redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: "Response was successfully updated." }
-        format.json { render :show, status: :ok, location: @user_response }
+      if @member_response.update_attributes(member_response_params)
+        format.html { redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: "Response was successfully updated." }
+        format.json { render :show, status: :ok, location: @member_response }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user_response.errors, status: :unprocessable_entity }
+        format.json { render json: @member_response.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def destroyCheckBox
-    @user_response.destroy 
-    redirect_to home_index_path(uid: current_user.id, desired_date: Date.today.to_s)
+    @member_response.destroy 
+    redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s)
   end
 
   private
 
   def set_response
-      @user_response = UserResponse.find(params[:id])
+      @member_response = MemberResponse.find(params[:id])
   end
 
   def set_rating
       @mood_rating = MoodRating.find(params[:id])
   end
 
-  def user_response_params
-    params.permit(:id, :user_id, :question_asked, :response_type, :response_date, :response, :checked_off)
+  def member_response_params
+    params.permit(:id, :member_id, :question_asked, :response_type, :response_date, :response, :checked_off)
   end
 
   def slider_picture_params

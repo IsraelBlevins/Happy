@@ -1,7 +1,7 @@
-class CreateUserResponses < ActiveRecord::Migration[6.0]
+class CreateMemberResponses < ActiveRecord::Migration[6.0]
   def change
-    create_table :user_responses do |t|
-      t.integer "user_id"
+    create_table :member_responses do |t|
+      t.integer "member_id"
       t.string  "question_asked", :null =>true
       t.string  "response_type"
       t.string  "response"
