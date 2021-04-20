@@ -109,7 +109,7 @@
                             <%if current_member.superUser%>
                                 <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete item?' }, class: "btn btn-danger btn-sm" %></td>
                             <%end%>
-                            <%= form.text_field :response, label: "<span></span>".html_safe, size: "20x10" %>
+                            <%= form.text_field :response, label: "<span></span>".html_safe, size: "20x5" %>
                             <%= form.hidden_field :checked_off, value: false %>
                             <%= form.hidden_field :member_id, value: current_member.id %>
                             <%= form.hidden_field :question_asked, value: displayed_question.question %>
@@ -154,7 +154,7 @@
             <p class="mb-1 ml-3"><%= member_response.question_asked %></p>
             <%= bootstrap_form_with url: "/create" do |form| %>
                 <div class="col">
-                    <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x10", value: member_response.response, disabled:true  %>
+                    <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", value: member_response.response, disabled:true  %>
                 </div>
             <% end %>
         <% end %>
@@ -171,7 +171,7 @@
                             <%if current_member.superUser && current_member.id == @referenced_member.id %>
                                 <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
                             <%end%>
-                            <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x10", value: member_response.response, disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
+                            <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", value: member_response.response, disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
                             <%= form.hidden_field :member_id, value: current_member.id %>
                             <%= form.hidden_field :question_asked, value: displayed_question.question %>
                             <%= form.hidden_field :response_type, value: "Free Form" %>
@@ -197,7 +197,7 @@
                         <%if current_member.superUser && current_member.id == @referenced_member.id%>
                             <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
                         <%end%>
-                        <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x10", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
+                        <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
                         <%= form.hidden_field :member_id, value: current_member.id %>
                         <%= form.hidden_field :question_asked, value: displayed_question.question %>
                         <%= form.hidden_field :response_type, value: "Free Form" %>
@@ -221,7 +221,7 @@
 <div class="row">
     <div class="col-lg-12 mx-3 d-flex justify-content-center text-center">
         <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s%>
-            <%if Time.now.hour >= 9 && Time.now.hour < 10 %>
+            <%if Time.now.hour >= 6 && Time.now.hour < 12 %>
                 <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                     <div>
                         <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
@@ -239,14 +239,14 @@
                             <% end %>
                         <% end %>
                         <% if !@alreadyResponded %>
-                            <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 9AM and 10AM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                            <%= form.range_field :rating,  label: "How are you feeling this morning? (Answer between 6AM and 12PM CST)", in: 1..9, :step => 1,  oninput:"updateValue(this.value)"  %>
                             <p id="sliderDisplay"></p>
                             <%= form.submit "Save Rating", class: "btn btn-warning" %>
                         <% end %>
 
                     <br>
                 <% end %>
-            <% elsif Time.now.hour >= 18 && Time.now.hour < 24 %>
+            <% elsif Time.now.hour >= 16 && Time.now.hour < 24 %>
                 <%= bootstrap_form_with url: "/createMoodRating" do |form| %>
                     <div>
                         <img src= "<%=@most_recent_slider%>", class = "img-fluid", alt = "mood rating scale"> 
@@ -264,7 +264,7 @@
                             <% end %>
                         <% end %>
                         <% if !@alreadyResponded %>
-                            <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 7PM CST)", in: 0..10, :step => 1,  oninput:"updateValue(this.value)"  %>
+                            <%= form.range_field :rating,  label: "How are you feeling this evening? (Answer between 6PM and 12AM CST)", in: 1..9, :step => 1,  oninput:"updateValue(this.value)"  %>
                             <p id="sliderDisplay"></p>
                             <%= form.submit "Save", class: "btn btn-warning" %>
                         <% end %>
@@ -319,7 +319,7 @@
                 <%= bootstrap_form_with url: "/createQuestion" do |form| %> 
                     <div class="mx-3">
                         <div>
-                            <%= form.text_area :question, label: "Enter question here", size: "10x10" %>
+                            <%= form.text_area :question, label: "Enter question here", size: "10x5" %>
                             <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Check Box"]), {}, {class: "form form-group form-control" } %>
                         </div>
                         <div>
@@ -338,7 +338,7 @@
                 <%= bootstrap_form_with url: "/createSliderPicture" do |form| %> 
                     <div class="mx-3">
                         <div>
-                            <%= form.text_area :image_link, label: "Enter Image link here:", size: "10x10" %>   
+                            <%= form.text_area :image_link, label: "Enter Image link here:", size: "10x5" %>   
                         </div>
                         <div>
                             <%= form.submit "Change Image", class: "btn btn-danger mr-3" %>
