@@ -84,8 +84,23 @@
     <h3>Check-Ins</h3>
 <div class="row">
     <div class="col-lg-6 col-md-12">
+        <% @member_responses.each do |member_response| %>
+            <% if member_response.response_date.to_date != Date.today && member_response.response_type == "Check Box" && @desired_date != Date.today.to_s && member_response.response_date.to_date.to_s == @desired_date && @referenced_member.id == current_member.id %>
+                <div class = "mx-3">
+                    <p class="mb-1"><%= member_response.question_asked %></p>
+                    <div class ="form-inline">
+                        <%= bootstrap_form_with url: "/create" do |form| %>
+                            <div class="input-group">
+                                <%= form.check_box :checked_off, label: "<span></span>".html_safe, checked: member_response.checked_off, disabled: true %>
+                                <%= form.label member_response.response %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+        <% end %>
         <% @displayed_questions.each do | displayed_question | %>
-            <% if displayed_question.question_type == "Check Box"%>
+            <% if displayed_question.question_type == "Check Box" && @desired_date == Date.today.to_s%>
                 <div class ="mx-3">
                     <p class="mb-1"><%= displayed_question.question %></p>
                     <%if current_member.id == @referenced_member.id && @desired_date == Date.today.to_s%>
@@ -108,7 +123,7 @@
                 <br>
             <% end %>
             <% @member_responses.each do |member_response| %>
-                <%if displayed_question.question_type == "Check Box" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date %>
+                <%if displayed_question.question_type == "Check Box" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == Date.today.to_s %>
                     <div class ="form-inline">
                         <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                             <div class="input-group ml-3">
@@ -134,10 +149,19 @@
 
     <%#Free Form Questions%>
     <div class="col-lg-6 col-md-12">
+    <% @member_responses.each do |member_response| %>
+        <% if member_response.response_date.to_date != Date.today && member_response.response_type == "Free Form" && @desired_date != Date.today.to_s && member_response.response_date.to_date.to_s == @desired_date && @referenced_member.id == current_member.id %>
+            <p class="mb-1"><%= member_response.question_asked %></p>
+            <%= bootstrap_form_with url: "/create" do |form| %>
+                <%= form.text_area :response, label: "<span></span>".html_safe, value: member_response.response, disabled:true  %>
+            <% end %>
+        <% end %>
+    <% end %>
+
     <% @displayed_questions.each do |displayed_question| %>
         <% @notDisplayed = true %>
         <% @member_responses.each do |member_response| %>
-            <%if displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date %>
+            <%if displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == Date.today.to_s %>
                 <p class="mb-1 ml-3"><%= displayed_question.question %></p>
                 <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                     <div class="col">
@@ -163,7 +187,7 @@
                 <% end %>
             <% end %>
         <% end %>
-        <%if @notDisplayed && displayed_question.question_type == "Free Form" %> 
+        <%if @notDisplayed && displayed_question.question_type == "Free Form" && @desired_date == Date.today.to_s %> 
             <p class="mb-1 ml-3"><%= displayed_question.question %></p> 
             <%= bootstrap_form_with url: "/create" do |form| %> 
                 <div class="col">
