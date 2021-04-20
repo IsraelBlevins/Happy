@@ -16,7 +16,7 @@ class HomeworkController < ApplicationController
 
     respond_to do |format|
       if @displayed_question.save
-        format.html { redirect_to homework_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'New Homework was successfully saved.' }
+        format.html { redirect_to homework_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: 'New Homework was successfully saved.' }
         format.json { render :show, status: :created, location: @displayed_questions }
       else
         format.html { render :new }
@@ -31,7 +31,7 @@ class HomeworkController < ApplicationController
 
     respond_to do |format|
       if @video.save
-        format.html { redirect_to homework_index_path(uid: current_user.id, desired_date: Date.today.to_s), notice: 'New Video was successfully saved.' }
+        format.html { redirect_to homework_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: 'New Video was successfully saved.' }
         format.json { render :show, status: :created, location: @video }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class HomeworkController < ApplicationController
   # DELETE /displayed_question/1 or /displayed_question/1.json
   def destroy
     @displayed_question.destroy
-    redirect_to homework_index_path(uid: current_user.id, desired_date: Date.today.to_s)
+    redirect_to homework_index_path(uid: current_member.id, desired_date: Date.today.to_s)
   end
 
 

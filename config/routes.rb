@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   patch '/updateMoodRating' => 'home#updateMoodRating'
   patch '/update' => 'home#update'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  resources :users do
+  resources :members do
     resources :comments
   end
 

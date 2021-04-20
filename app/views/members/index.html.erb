@@ -1,8 +1,8 @@
-<%if current_user.superUser %>
+<%if current_member.superUser %>
 
 <%# Navbar %>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-  <img src="<%=current_user.image%>" alt="Profile Picture" class="avatar">
+  <img src="<%=current_member.image%>" alt="Profile Picture" class="avatar">
   <div class="container-fluid">
     <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <%= link_to "Check-Ins", home_index_path(uid: current_user.id, desired_date: Date.today.to_s), :class => "nav-link"%>
+          <%= link_to "Check-Ins", home_index_path(uid: current_member.id, desired_date: Date.today.to_s), :class => "nav-link"%>
         </li>
         <li class="nav-item">
           <%= link_to "My Group", group_index_path, :class => "nav-link"%>
@@ -24,11 +24,11 @@
         </li>
       </ul>
       <ul class="nav navbar-nav pr-3">
-        <%= link_to "Edit profile", edit_user_path(current_user), :class => "btn btn-warning" %>
+        <%= link_to "Edit profile", edit_member_path(current_member), :class => "btn btn-warning" %>
       </ul>
-      <%if current_user.superUser %>
+      <%if current_member.superUser %>
         <ul class="nav navbar-nav pr-3">
-          <%= link_to "Show all users", users_path, :class => "btn btn-warning active" %>
+          <%= link_to "Show all users", members_path, :class => "btn btn-warning active" %>
         </ul>
       <% end %> 
       <ul class="nav navbar-nav">
@@ -57,21 +57,21 @@
   </thead>
 
   <tbody>
-    <% @users.each do |user| %>
+    <% @members.each do |member| %>
       <tr>
-        <td><img src="<%=user.image%>" alt="Profile Picture" class="avatar"></td>
-        <td><%= link_to user.display_name, home_index_path(uid: user.id, desired_date: Date.today.to_s) %></td>
-        <td><%= user.email %></td>
-        <td><%= user.group_id %></td>
+        <td><img src="<%=member.image%>" alt="Profile Picture" class="avatar"></td>
+        <td><%= link_to member.display_name, home_index_path(uid: member.id, desired_date: Date.today.to_s) %></td>
+        <td><%= member.email %></td>
+        <td><%= member.group_id %></td>
         <td>
-          <%if user.superUser %>
+          <%if member.superUser %>
             Admin
           <%else%>
             Member
           <%end%>
         </td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_member_path(member) %></td>
+        <td><%= link_to 'Delete', member, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

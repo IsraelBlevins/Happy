@@ -1,6 +1,6 @@
 <%# Navbar %>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-  <img src="<%=current_user.image%>" alt="Profile Picture" class="avatar">
+  <img src="<%=current_member.image%>" alt="Profile Picture" class="avatar">
   <div class="container-fluid">
     <a class="navbar-brand mb-0 h1" href="#">Find Your Happy</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <%= link_to "Check-Ins", home_index_path(uid: current_user.id, desired_date: Date.today.to_s), :class => "nav-link"%>
+          <%= link_to "Check-Ins", home_index_path(uid: current_member.id, desired_date: Date.today.to_s), :class => "nav-link"%>
         </li>
         <li class="nav-item">
           <%= link_to "My Group", group_index_path, :class => "nav-link"%>
@@ -22,11 +22,11 @@
         </li>
       </ul>
       <ul class="nav navbar-nav pr-3">
-        <%= link_to "Edit profile", edit_user_path(current_user), :class => "btn btn-warning active" %>
+        <%= link_to "Edit profile", edit_member_path(current_member), :class => "btn btn-warning active" %>
       </ul>
-      <%if current_user.superUser %>
+      <%if current_member.superUser %>
         <ul class="nav navbar-nav pr-3">
-          <%= link_to "Show all users", users_path, :class => "btn btn-warning" %>
+          <%= link_to "Show all users", members_path, :class => "btn btn-warning" %>
         </ul>
       <% end %> 
       <ul class="nav navbar-nav">
@@ -40,12 +40,12 @@
 <h2 class="text-center">Edit User</h2>
 <br>
 
-<%= form_with(model: @user, local: true, :html => {:multipart => true}) do |form| %>
-  <% if @user.errors.any? %>
+<%= form_with(model: @member, local: true, :html => {:multipart => true}) do |form| %>
+  <% if @member.errors.any? %>
     <div id="error_explanation">
 
       <ul>
-        <% @user.errors.full_messages.each do |message| %>
+        <% @member.errors.full_messages.each do |message| %>
           <p style="color:red; text-align: center"><%= message %></p>
         <% end %>
       </ul>
@@ -55,7 +55,7 @@
   <div class="text-center actions">
   <table style="padding-right: 20px;">
      
-    <%if current_user == @user %>
+    <%if current_member == @member %>
       <tr>
         <th><%= form.label :image, "Profile Picture" %></th>
         <td><%= form.text_field :image, placeholder: 'URL' %></td>
@@ -79,15 +79,15 @@
       </tr> 
     <%end%>
 
-    <%if current_user.superUser%>
+    <%if current_member.superUser%>
       <tr>
         <th><%= form.label :group_id, "Group:" %> </th>
         <td><%= form.number_field :group_id %></td>
       </tr>
-      <%if current_user != @user%> 
+      <%if current_member != @member%> 
         <tr>
           <th><%= form.label :superUser, "Admin Role?" %></th>
-          <% if @user.superUser == true %>
+          <% if @member.superUser == true %>
             <th><%= form.radio_button :superUser, true, :checked => true %> True</th>
             <th><%= form.radio_button :superUser, false %> False</th>
           <%else%>
