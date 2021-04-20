@@ -85,7 +85,7 @@
 <div class="row">
     <div class="col-lg-6 col-md-12">
         <% @member_responses.each do |member_response| %>
-            <% if member_response.response_date.to_date != Date.today && member_response.response_type == "Check Box" && @desired_date != Date.today.to_s && member_response.response_date.to_date.to_s == @desired_date && @referenced_member.id == current_member.id %>
+            <% if member_response.response_date.to_date != Date.today && member_response.response_type == "Check Box" && @desired_date != Date.today.to_s && member_response.response_date.to_date.to_s == @desired_date && member_response.member_id == @referenced_member.id %>
                 <div class = "mx-3">
                     <p class="mb-1"><%= member_response.question_asked %></p>
                     <div class ="form-inline">
@@ -150,10 +150,12 @@
     <%#Free Form Questions%>
     <div class="col-lg-6 col-md-12">
     <% @member_responses.each do |member_response| %>
-        <% if member_response.response_date.to_date != Date.today && member_response.response_type == "Free Form" && @desired_date != Date.today.to_s && member_response.response_date.to_date.to_s == @desired_date && @referenced_member.id == current_member.id %>
-            <p class="mb-1"><%= member_response.question_asked %></p>
+        <% if member_response.response_date.to_date != Date.today && member_response.response_type == "Free Form" && @desired_date != Date.today.to_s && member_response.response_date.to_date.to_s == @desired_date && member_response.member_id == @referenced_member.id %>
+            <p class="mb-1 ml-3"><%= member_response.question_asked %></p>
             <%= bootstrap_form_with url: "/create" do |form| %>
-                <%= form.text_area :response, label: "<span></span>".html_safe, value: member_response.response, disabled:true  %>
+                <div class="col">
+                    <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x10", value: member_response.response, disabled:true  %>
+                </div>
             <% end %>
         <% end %>
     <% end %>
