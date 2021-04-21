@@ -4,6 +4,7 @@ class CreateVideos < ActiveRecord::Migration[6.0]
       t.string "video_link"
       t.datetime "upload_date"
       t.string  "uploader_comment"
+      t.string "video_title"
       t.timestamps
     end
   end
