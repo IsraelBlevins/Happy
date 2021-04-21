@@ -1,6 +1,6 @@
 class HomeworkController < ApplicationController
   before_action :set_displayed_question, only: %i[destroy]
-
+  before_action :set_video, only: %i[destroyVideo]
   def index
     @videos = Video.all()
     @displayed_questions = DisplayedQuestion.all()
@@ -38,6 +38,11 @@ class HomeworkController < ApplicationController
         format.json { render json: @video.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def destroyVideo
+    @video.destroy 
+    redirect_to homework_index_path(uid: current_member.id, desired_date: Date.today.to_s)
   end
 
   # DELETE /displayed_question/1 or /displayed_question/1.json

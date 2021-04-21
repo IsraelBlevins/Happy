@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :comments, only: [:destroy]
 
   resources :homework, only: [:destroy]
+  delete 'destroyVideo/:id' => 'homework#destroyVideo'
   
   resources :home, only: [:destroy]
   delete 'destroyCheckBox/:id' => 'home#destroyCheckBox'
