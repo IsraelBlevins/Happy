@@ -57,3 +57,5 @@ gem "bootstrap_form", "~> 4.0"
 
 gem "chartkick"
 gem 'groupdate'
+
+gem "simple_calendar", "~> 2.0"

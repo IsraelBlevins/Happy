@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  
+  get 'home/index/:uid/:desired_date' => 'home#index', as: :home_index
+
   get 'data/index'
   get 'group/index'
   get 'homework/index'
   get 'sessions/new' => 'sessions#new'
-  get 'home/index' => 'home#index'
 
   post '/create' => 'home#create'
   post '/createQuestion' => 'home#createQuestion'
