@@ -11,4 +11,6 @@ class Member < ApplicationRecord
   #validates :password_confirmation, presence: true
 
   has_many :comment, dependent: :destroy #This destroys all the comments associated with the deleted member
+  has_many :member_response, dependent: :destroy #This destroys all the comments associated with the deleted member
+  has_many :mood_rating, dependent: :destroy #This destroys all the comments associated with the deleted member
 end
