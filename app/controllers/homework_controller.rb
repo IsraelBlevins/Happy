@@ -60,6 +60,6 @@ class HomeworkController < ApplicationController
     end
 
     def video_params
-      params.permit( :video_link, :uploader_comment)
+      params.permit( :video_link, :uploader_comment, :video_title)
     end
 end
