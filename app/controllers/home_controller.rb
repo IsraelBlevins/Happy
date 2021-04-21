@@ -48,7 +48,7 @@ class HomeController < ApplicationController
 
     respond_to do |format|
       if @displayed_question.save
-        format.html { redirect_to home_index_path(uid: current_member.id, desired_date: @displayed_question.question_date.to_date.to_s), notice: 'New Question was successfully saved.' }
+        format.html { redirect_to home_index_path(uid: current_member.id, desired_date: Date.today.to_s), notice: 'New Question was successfully saved.' }
         format.json { render :show, status: :created, location: @displayed_questions }
       else
         format.html { render :new }

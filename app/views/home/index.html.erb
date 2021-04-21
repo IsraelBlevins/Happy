@@ -127,7 +127,7 @@
                         <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
                         <div class="">
                             <%if current_member.superUser %>
-                                <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete item?' }, class: "btn btn-danger btn-sm" %></td>
+                                <td><%= link_to 'Delete Check Box Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete item?' }, class: "btn btn-danger btn-sm" %></td>
                             <%else%>
                                 <%= form.text_field :response, label: "<span></span>".html_safe, size: "20x5" %>
                                 <%= form.hidden_field :checked_off, value: false %>
@@ -192,7 +192,7 @@
                     <div class="col">
                         <div class="mb-3">
                             <%if current_member.superUser && current_member.id == @referenced_member.id %>
-                                <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                                <td><%= link_to 'Delete Free Form Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
                                 <% @notDisplayed = false %>
                             <%else%>
                                 <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", value: member_response.response, disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
@@ -220,7 +220,7 @@
                 <div class="col">
                     <div class="mb-3">
                         <%if current_member.superUser && current_member.id == @referenced_member.id%>
-                            <td><%= link_to 'Delete Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                            <td><%= link_to 'Delete Free Form Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
                         <%else%>
                             <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
                             <%= form.hidden_field :member_id, value: current_member.id %>
@@ -315,7 +315,7 @@
                         <div>
                             <%= form.text_area :question, label: "Enter question here", size: "10x5" %>
                             <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Check Box"]), {}, {class: "form form-group form-control" } %>
-                            <%= form.date_field :question_date%>
+                            <%= form.date_field :question_date, min: Date.today, value: Date.today %>
                         </div>
                         <div>
                             <%= form.submit "Add Question", class: "btn btn-danger" %>
