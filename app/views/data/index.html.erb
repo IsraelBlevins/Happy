@@ -68,5 +68,11 @@
   </div>
 </div>
 
+<% if current_member.superUser %>
+  <%= month_calendar do |date| %>
+    <%= link_to date.strftime("%-d"), home_index_path(uid: current_member.id, desired_date: date)  %>
+  <% end %>
+<% end %>
 
 </body>
+
