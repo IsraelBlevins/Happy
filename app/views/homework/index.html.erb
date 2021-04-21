@@ -126,7 +126,7 @@
             </div>
             <div class="row justify-content-center">
               <% if current_member.superUser %>
-                <%= link_to "Delete Video", { :controller => 'homework', :action => 'destroyVideo', :id => video.id }, method: :delete, class: "btn btn-sm btn-danger" %>
+                <%= link_to "Delete Video", { :controller => 'homework', :action => 'destroyVideo', :id => video.id }, method: :delete, data: { confirm: 'Delete video?' }, class: "btn btn-sm btn-danger" %>
               <%end%>
             </div>
             <br>
