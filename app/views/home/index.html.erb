@@ -314,7 +314,7 @@
                     <div class="mx-3">
                         <div>
                             <%= form.text_area :question, label: "Enter question here", size: "10x5" %>
-                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Check Box"]), {}, {class: "form form-group form-control" } %>
+                            <%= form.select :question_type, options_for_select([["Select a Question Type", ""], "Free Form", "Check Box"]), {}, {required: true, class: "form form-group form-control" } %>
                             <%= form.date_field :question_date, min: Date.today, value: Date.today %>
                         </div>
                         <div>
