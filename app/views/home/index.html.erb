@@ -96,7 +96,7 @@
 <%end%>
 <% if !@responsePresent && !current_member.superUser && @desired_date != Date.today.to_s%>
     <p class="ml-3">User did not make any entries for this day.</p>
-<% elsif current_member.superUser && current_member.id != @referenced_member.id && @desired_date != Date.today.to_s%>
+<% elsif !@responsePresent && current_member.superUser && current_member.id != @referenced_member.id && @desired_date != Date.today.to_s%>
     <p class="ml-3">User did not make any entries for this day.</p>
 <%end%>
 
