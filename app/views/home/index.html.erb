@@ -96,6 +96,8 @@
 <%end%>
 <% if !@responsePresent && !current_member.superUser && @desired_date != Date.today.to_s%>
     <p class="ml-3">User did not make any entries for this day.</p>
+<% elsif current_member.superUser && current_member.id != @referenced_member.id && @desired_date != Date.today.to_s%>
+    <p class="ml-3">User did not make any entries for this day.</p>
 <%end%>
 
 <div class="row">
@@ -120,7 +122,7 @@
             <% end %>
         <% end %>
         <% @displayed_questions.each do | displayed_question | %>
-            <% if (!current_member.superUser && displayed_question.question_type == "Check Box" && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Check Box" && @desired_date == displayed_question.question_date.to_date.to_s && current_member.id == @referenced_member.id) %>
+            <% if (!current_member.superUser && displayed_question.question_type == "Check Box" && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Check Box" && @desired_date == displayed_question.question_date.to_date.to_s && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s)) %>
                 <div class ="mx-3">
                     <p class="mb-1"><%= displayed_question.question %></p>
                     <%if (current_member.id == @referenced_member.id && @desired_date == Date.today.to_s) || (current_member.superUser && current_member.id == @referenced_member.id)%>
@@ -186,7 +188,7 @@
     <% @displayed_questions.each do |displayed_question| %>
         <% @notDisplayed = true %>
         <% @member_responses.each do |member_response| %>
-            <%if (!current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == displayed_question.question_date.to_date.to_s && current_member.id == @referenced_member.id) %>
+            <%if (!current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == displayed_question.question_date.to_date.to_s && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s)) %>
                 <p class="mb-1 ml-3"><%= displayed_question.question %></p>
                 <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                     <div class="col">
@@ -214,7 +216,7 @@
                 <% end %>
             <% end %>
         <% end %>
-        <%if (!current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && @desired_date == displayed_question.question_date.to_date.to_s && current_member.id == @referenced_member.id)%> 
+        <%if (!current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && @desired_date == displayed_question.question_date.to_date.to_s && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s))%> 
             <p class="mb-1 ml-3"><%= displayed_question.question %></p> 
             <%= bootstrap_form_with url: "/create" do |form| %> 
                 <div class="col">
