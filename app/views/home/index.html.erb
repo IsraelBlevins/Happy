@@ -19,6 +19,8 @@
     <link rel= "application.css">
     <meta charset="utf-8" />
     <title>Find Your Happy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 <%# Navbar %>
@@ -350,6 +352,8 @@
         <%end%>
     </div>
 </div>
+
+<br>
 
 <%if current_member.superUser && current_member.id == @referenced_member.id%>
     <%= month_calendar do |date| %>

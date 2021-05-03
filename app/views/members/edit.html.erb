@@ -1,3 +1,7 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
 <%# Navbar %>
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
   <img src="<%=current_member.image%>" alt="Profile Picture" class="avatar">
@@ -53,7 +57,7 @@
   <% end %>
 
   <div class="text-center actions">
-  <table style="padding-right: 20px;">
+  <table>
      
     <%if current_member == @member %>
       <tr>
