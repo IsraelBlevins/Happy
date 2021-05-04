@@ -1,0 +1,13 @@
+<div class="card ml-5">
+  <div class="card-body">
+    <%= reply.body %>
+    <footer style="font-size:12px">
+        <%= "Posted by " %>
+        <span style="font-weight: bold;"> <%= reply.commenter %></span> 
+        <%= " on " + reply.comment_time.strftime("%b %d, %Y") + reply.comment_time.strftime(" \u2022 %-I:%M %p %Z") %>
+        <% if current_member.id == reply.member_id %>
+            <span style="float:right;"><%= link_to "Delete Reply", reply, method: :delete, data: { confirm: 'Delete this comment?' }, class: "btn btn-outline-danger btn-sm"  %></span>
+        <% end %>
+    </footer>
+  </div>
+</div>

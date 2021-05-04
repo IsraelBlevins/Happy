@@ -1,6 +1,11 @@
 class CommentsController < ApplicationController
     before_action :set_comment, only: %i[ destroy ]
 
+    def new
+        @member = Member.find(params[:member_id])
+        @comment = @member.comment.new(parent_id: params[:parent_id], comment_date: params[:comment_date], recipient_ID: params[:recipient_ID], commenter: params[:commenter])
+    end
+
     def create
         @member = Member.find(params[:member_id])
         @comment = @member.comment.new(comment_params)
@@ -28,6 +33,6 @@ class CommentsController < ApplicationController
     end
 
     def comment_params
-        params.require(:comment).permit(:body, :commenter, :comment_date, :comment_time, :member_id, :recipient_ID)
+        params.require(:comment).permit(:body, :commenter, :comment_date, :comment_time, :member_id, :recipient_ID, :parent_id)
     end
 end
