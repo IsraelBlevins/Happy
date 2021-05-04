@@ -19,6 +19,8 @@
     <link rel= "application.css">
     <meta charset="utf-8" />
     <title>Find Your Happy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 <%# Navbar %>
@@ -94,10 +96,12 @@
         <% @responsePresent = true %>
     <%end%>
 <%end%>
-<% if !@responsePresent && !current_member.superUser && @desired_date != Date.today.to_s%>
-    <p class="ml-3">User did not make any entries for this day.</p>
+<% if !@responsePresent && !current_member.superUser && current_member.id == @referenced_member.id && @desired_date != Date.today.to_s %>
+    <p class="ml-3">You did not make any entries for this day.</p>
+<% elsif !@responsePresent && !current_member.superUser && current_member.id != @referenced_member.id && @desired_date != Date.today.to_s %>
+    <p class="ml-3"><%= @referenced_member.display_name %> did not make any entries for this day.</p>
 <% elsif !@responsePresent && current_member.superUser && current_member.id != @referenced_member.id && @desired_date != Date.today.to_s%>
-    <p class="ml-3">User did not make any entries for this day.</p>
+    <p class="ml-3"><%= @referenced_member.display_name %> did not make any entries for this day.</p>
 <%end%>
 
 <div class="row">
@@ -350,6 +354,8 @@
         <%end%>
     </div>
 </div>
+
+<br>
 
 <%if current_member.superUser && current_member.id == @referenced_member.id%>
     <%= month_calendar do |date| %>
