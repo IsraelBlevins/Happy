@@ -360,37 +360,43 @@
 <%#Comments%>
 <div class="row">
     <div class="col-12">
-        <% if current_member.id == @referenced_member.id && !current_member.superUser%>
+        <% if current_member.id == @referenced_member.id && !current_member.superUser %>
             <h3>Comments</h3> 
         <%end%>
-        <% if current_member.id != @referenced_member.id && !current_member.superUser %>
-            <h3>Comments</h3> 
-            <div class="card mx-3">
-            <div class="card-body">
-                <%= form_with(model: [current_member, current_member.comment.build]) do |f| %>
-                <%= f.hidden_field :recipient_ID, value: @referenced_member.id.to_s%>
-                <%= f.hidden_field :comment_date, value: @desired_date%>
-                <div class="form-group">
-                    <%= f.label 'New comment' %>
-                    <%= f.text_area :body, class: 'form-control' %>
+        <% if current_member.id != @referenced_member.id %>
+            <h3>Comments</h3>
+            <% if !current_member.superUser %> 
+                <div class="card mx-3">
+                <div class="card-body">
+                    <%= form_with(model: [current_member, current_member.comment.build]) do |f| %>
+                    <%= f.hidden_field :recipient_ID, value: @referenced_member.id.to_s%>
+                    <%= f.hidden_field :comment_date, value: @desired_date%>
+                    <div class="form-group">
+                        <%= f.label 'New comment' %>
+                        <%= f.text_area :body, class: 'form-control' %>
+                    </div>
+                    <%= f.submit 'Submit Comment', class: 'btn btn-primary' %>
+                    <% end %>
                 </div>
-                <%= f.submit 'Submit Comment', class: 'btn btn-primary' %>
-                <% end %>
-            </div>
-            </div>
+                </div>
+            <% end %>
         <% end %>
     </div>
 </div>
 <br>
-<div class="row">
-    <div class="col-12">
-        <div style="height:300px;overflow:auto;"> 
-            <% (@cmts.reverse).each do |c| %>
-                <%= render c %> 
-            <% end %>
+<% if @cmts.any? %>
+    <div class="row">
+        <div class="col-12">
+            <div style="height:300px;overflow:auto;"> 
+                <% (@cmts.reverse).each do |c| %>
+                    <%= render c %> 
+                <% end %>
+            </div>
         </div>
     </div>
-</div>
+<% elsif (current_member.id == @referenced_member.id && !current_member.superUser) || current_member.id != @referenced_member.id %>
+    <h4>No comments to display</h4>
+<% end %>
 
 </body>
 </html>
