@@ -387,11 +387,9 @@
 <% if @cmts.any? %>
     <div class="row">
         <div class="col-12">
-            <div style="height:300px;overflow:auto;"> 
-                <% (@cmts.reverse).each do |c| %>
-                    <%= render c %> 
-                <% end %>
-            </div>
+            <% (@cmts.reverse).each do |c| %>
+                <%= render c %> 
+            <% end %>
         </div>
     </div>
 <% elsif (current_member.id == @referenced_member.id && !current_member.superUser) || current_member.id != @referenced_member.id %>
