@@ -126,14 +126,14 @@
             <% end %>
         <% end %>
         <% @displayed_questions.each do | displayed_question | %>
-            <% if (!current_member.superUser && displayed_question.question_type == "Check Box" && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Check Box" && @desired_date == displayed_question.question_date.to_date.to_s && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s)) %>
+            <% if (!current_member.superUser && displayed_question.question_type == "Check Box" && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1 && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Check Box" && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1 && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s)) %>
                 <div class ="mx-3">
                     <p class="mb-1"><%= displayed_question.question %></p>
                     <%if (current_member.id == @referenced_member.id && @desired_date == Date.today.to_s) || (current_member.superUser && current_member.id == @referenced_member.id)%>
                         <%= bootstrap_form_with url: "/create", method: "post" do |form| %>
                         <div class="">
                             <%if current_member.superUser %>
-                                <td><%= link_to 'Delete Check Box Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete item?' }, class: "btn btn-danger btn-sm" %></td>
+                                <td><%= link_to 'Delete Check Box Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id, :desired_date => @desired_date }, method: :delete, data: { confirm: 'Delete item?' }, class: "btn btn-danger btn-sm" %></td>
                             <%else%>
                                 <%= form.text_field :response, label: "<span></span>".html_safe, size: "20x5" %>
                                 <%= form.hidden_field :checked_off, value: false %>
@@ -150,7 +150,7 @@
                 <br>
             <% end %>
             <% @member_responses.each do |member_response| %>
-                <%if (!current_member.superUser && displayed_question.question_type == "Check Box" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Check Box" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && (displayed_question.question_date <=> Date.today) != -1)  %>
+                <%if (!current_member.superUser && displayed_question.question_type == "Check Box" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1 && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Check Box" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1  && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s)) %>
                     <div class ="form-inline">
                         <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                             <div class="input-group ml-3">
@@ -192,13 +192,13 @@
     <% @displayed_questions.each do |displayed_question| %>
         <% @notDisplayed = true %>
         <% @member_responses.each do |member_response| %>
-            <%if (!current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && @desired_date == displayed_question.question_date.to_date.to_s && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s)) %>
+            <%if (!current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1 && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && displayed_question.question_type == "Free Form" && displayed_question.question == member_response.question_asked && member_response.member_id == @referenced_member.id && member_response.response_date.to_date.to_s == @desired_date && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1 && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s)) %>
                 <p class="mb-1 ml-3"><%= displayed_question.question %></p>
                 <%= bootstrap_form_with url: "/update", method: "patch" do |form| %>
                     <div class="col">
                         <div class="mb-3">
                             <%if current_member.superUser && current_member.id == @referenced_member.id %>
-                                <td><%= link_to 'Delete Free Form Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                                <td><%= link_to 'Delete Free Form Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id, :desired_date => @desired_date}, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
                                 <% @notDisplayed = false %>
                             <%else%>
                                 <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", value: member_response.response, disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
@@ -220,13 +220,13 @@
                 <% end %>
             <% end %>
         <% end %>
-        <%if (!current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && @desired_date == displayed_question.question_date.to_date.to_s && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && @desired_date == displayed_question.question_date.to_date.to_s && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s))%> 
+        <%if (!current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1 && (@desired_date.to_datetime <=> Date.today) != -1) || (current_member.superUser && @notDisplayed && displayed_question.question_type == "Free Form" && (@desired_date.to_date <=> displayed_question.question_start.to_date) > -1 && (@desired_date.to_date <=> displayed_question.question_end.to_date) < 1 && (current_member.id == @referenced_member.id || @desired_date == Date.today.to_s))%> 
             <p class="mb-1 ml-3"><%= displayed_question.question %></p> 
             <%= bootstrap_form_with url: "/create" do |form| %> 
                 <div class="col">
                     <div class="mb-3">
                         <%if current_member.superUser && current_member.id == @referenced_member.id%>
-                            <td><%= link_to 'Delete Free Form Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id }, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
+                            <td><%= link_to 'Delete Free Form Question', { :controller => 'home', :action => 'destroy', :id => displayed_question.id, :desired_date => @desired_date}, method: :delete, data: { confirm: 'Delete free form question?' }, class: "btn btn-danger btn-sm" %></td>
                         <%else%>
                             <%= form.text_area :response, label: "<span></span>".html_safe, size: "100x5", disabled: @referenced_member.id != current_member.id || @desired_date != Date.today.to_s %>
                             <%= form.hidden_field :member_id, value: current_member.id %>
@@ -321,7 +321,8 @@
                         <div>
                             <%= form.text_area :question, label: "Enter Question Here", size: "10x5" %>
                             <%= form.select :question_type, options_for_select(["Free Form", "Check Box"]), {label: "Select a Question Type",}, {required: true, class: "form form-group form-control" } %>
-                            <%= form.date_field :question_date, min: Date.today, value: Date.today %>
+                            <%= form.date_field :question_start, min: Date.today, value: Date.today %>
+                            <%= form.date_field :question_end, min: Date.today, value: Date.today %>
                         </div>
                         <div>
                             <%= form.submit "Add Question", class: "btn btn-danger" %>
@@ -359,7 +360,7 @@
 
 <%if current_member.superUser && current_member.id == @referenced_member.id%>
     <%= month_calendar do |date| %>
-        <%= link_to date.strftime("%-d"), home_index_path(uid: current_member.id, desired_date: date)  %>
+        <%= link_to date.strftime("%-d"), home_index_path(uid: current_member.id, desired_date: date.to_s)  %>
     <% end %>
 <% end %>
 

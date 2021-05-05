@@ -58,9 +58,9 @@ class HomeController < ApplicationController
   end
 
   def destroy
-    @questionDate = @displayed_question.question_date.to_date.to_s
+    #@questionDate = @displayed_question.question_start.to_date.to_s
     @displayed_question.destroy
-    redirect_to home_index_path(uid: current_member.id, desired_date: @questionDate)
+    redirect_to home_index_path(uid: current_member.id, desired_date: params[:desired_date])
   end
 
   def set_displayed_question
@@ -105,7 +105,7 @@ class HomeController < ApplicationController
   end
 
   def displayed_question_params
-    params.permit(:question, :question_type, :question_date)
+    params.permit(:question, :question_type, :question_date, :question_start, :question_end)
   end
 
 
