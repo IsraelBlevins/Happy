@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   delete 'destroyVideo/:id' => 'homework#destroyVideo'
   
   resources :home, only: [:destroy]
+  delete 'home/:id/:desired_date' => 'home#destroy'
   delete 'destroyCheckBox/:id' => 'home#destroyCheckBox'
 
   get '/login', to: 'sessions#new'
