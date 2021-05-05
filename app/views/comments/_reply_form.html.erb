@@ -1,0 +1,15 @@
+<div class="card ml-5">
+  <div class="card-body">
+    <%= form_with(model: [@member, @comment]) do |f| %>
+      <%= f.hidden_field :parent_id %>
+      <%= f.hidden_field :recipient_ID, value: @comment.recipient_ID%>
+      <%= f.hidden_field :comment_date, value: @comment.comment_date%>
+      <div class="form-group">
+        <%= f.label 'Reply' %>
+        <%= f.text_area :body, class: 'form-control' %>
+      </div>
+      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', home_index_path(uid: @comment.recipient_ID, desired_date: @comment.comment_date.to_date.to_s), class: 'btn btn-secondary' %>
+    <% end %>
+  </div>
+</div>
