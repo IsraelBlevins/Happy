@@ -1,4 +1,4 @@
 class MemberResponse < ApplicationRecord
-    validates :response, presence: true
+    validates :response, presence: false
     belongs_to :member
 end
